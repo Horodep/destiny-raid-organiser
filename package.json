@@ -1,0 +1,26 @@
+{
+  "name": "destiny-raid-organiser",
+  "version": "0.9.0",
+  "description": "Discord bot for Destiny 2 raid management",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Horodep/destiny-raid-organiser.git"
+  },
+  "author": "Horodep",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Horodep/destiny-raid-organiser/issues"
+  },
+  "homepage": "https://github.com/Horodep/destiny-raid-organiser#readme",
+  "dependencies": {
+    "discord.js": "^14.6.0",
+    "node-fetch": "^3.2.5",
+    "node-schedule": "^2.1.0",
+    "npm": "^8.12.1"
+  }
+}
