@@ -35,4 +35,4 @@ export function GetMainCommandsArray() {
     return array;
 }
 
-const raidChannels = config.channels.raids;
+const raidChannels = config.guilds.map(guild => guild.raids);

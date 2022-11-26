@@ -3,7 +3,7 @@ import config from "../config.json" assert {type: "json"};
 var sandbox;
 
 export function FetchDefaultCatchErrorChannel(client) {
-	sandbox = client.channels.cache.get(config.channels.sandbox);
+	sandbox = client.channels.cache.get(config.dev_config.sandbox_channel);
 }
 
 export function CatchError(e, channel) {
@@ -22,7 +22,7 @@ export function CatchShedulerError(e, client) {
 
 function ShowErrorWithStack(e, channel) {
 	console.error(e);
-	channel.send(`<@${config.users.developers[0]}>\nОшибка ${e.name}: ${e.message}\n\n${e.stack}`, { code: 'elixir' });
+	channel.send(`<@${config.dev_config.developer}>\nОшибка ${e.name}: ${e.message}\n\n${e.stack}`, { code: 'elixir' });
 }
 
 function ShowInfoMessage(e, channel) {
@@ -35,7 +35,7 @@ function ShowHttpError(e, channel) {
 
 	console.error(e);
 	if (typeof (e.response) == 'string') {
-		channel.send(`<@${config.users.developers[0]}>, API вернуло не JSON:\n\`endpoint: ${e.url}\``);
+		channel.send(`<@${config.dev_config.developer}>, API вернуло не JSON:\n\`endpoint: ${e.url}\``);
 		channel.send(`${e.response}`, { code: 'xml' });
 		channel.send(`${e.stack}`, { code: 'elixir' });
 	} else {
@@ -51,7 +51,7 @@ export function CatchErrorAndDeleteByTimeout(e, channel, timeout) {
 	}else{
 		var line =  "Данное сообщение будет удалено через " + Math.floor(timeout / 1000) + " секунд." +
 					"\nПроизошла ошибка " + e.name + ": " + e.message +
-					"\nПопробуйте еще раз. Если ошибка повторится, обратитесь к <@" + config.users.developers[0] + "> со скрином ошибки." +
+					"\nПопробуйте еще раз. Если ошибка повторится, обратитесь к <@" + config.dev_config.developer + "> со скрином ошибки." +
 					"\n```js\n" + e.stack + "```";
 	}
 	validChannel.send(line).then((msg) => {

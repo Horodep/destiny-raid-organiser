@@ -53,7 +53,7 @@ export function SendPrivateMessageToMember(discordMember, text){
 function Logging (discordMember, text, success = true) {
     return;
     // no logging
-    var log_channel = discordMember.client.channels.cache.get(config.channels.logging);
+    var log_channel = discordMember.client.channels.cache.get(config.dev_config.logging);
     var log_text = "__Игроку <@" + discordMember.id + "> [" + discordMember.displayName + "] " +
                     (success ?  " отправлено сообщение:__\n" + text : "**не удалось отправить сообщение**__");
 	log_channel.send(log_text);

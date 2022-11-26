@@ -31,8 +31,10 @@ client.login(config.credentials.discordApiKey);
 
 client.on(Events.ClientReady, () => {
 	client.user.setActivity("Support: Horodep#2567");
-	var guild = client.guilds.cache.get(config.guilds.operational[0]);
-	guild.members.fetch();
+	config.guilds.forEach(guild_data => {
+		var guild = client.guilds.cache.get(guild_data.id);
+		guild?.members.fetch();
+	});
 	
 	FetchDefaultCatchErrorChannel(client);
 	InitSheduler();

@@ -1,9 +1,9 @@
 import { CatchError } from "../core/catcherror.js";
 import { RaidData } from "./raidData.js";
 import { EmbedBuilder } from "discord.js";
-import { GlobalMention } from "./raidLines.js";
+import { GetGlobalMentionForGuild } from "./raidLines.js";
 
-export function CreateRaidEmbed(data, customTimestamp) {
+export function CreateRaidEmbed(data, guildId, customTimestamp) {
     if (data.header.length > 256)
         throw 'Длина заголовка сбора не может быть больше 256 символов.';
     else if (data.description != null && data.description.length > 2048)
@@ -11,7 +11,7 @@ export function CreateRaidEmbed(data, customTimestamp) {
     else if (data.numberOfPlaces == 1)
         throw 'Активность можно собрать не менее, чем на двоих участников.';
 
-    var mention = data.roleTag ? data.roleTag.join(' ') : GlobalMention();
+    var mention = data.roleTag ? data.roleTag.join(' ') : GetGlobalMentionForGuild(guildId);
 
     var { field0, field1, left } = data.FormFields()
     var embed = new EmbedBuilder()

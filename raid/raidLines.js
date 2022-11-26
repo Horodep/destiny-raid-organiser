@@ -39,6 +39,6 @@ export function FormRaidInfoPrivateMessage(data, message) {
 > Автор сбора: **${data.author.displayName}**`;
 }
 
-export function GlobalMention(){
-    return "<@&" + config.roles.mention + ">";
+export function GetGlobalMentionForGuild(guildId){
+    return guildId ? "<@&" + config.roles.mention + ">" : "";
 }

@@ -1,5 +1,4 @@
 import schedule from 'node-schedule';
-import config from "../config.json" assert {type: "json"};
 import { CatchShedulerError } from "./catcherror.js";
 import { client } from "../index.js"
 
