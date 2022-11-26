@@ -1,7 +1,7 @@
-import { CatchError, CatchRaidError } from "../core/catcherror.js";
+import { CatchError, CatchErrorAndDeleteByTimeout, CatchRaidError } from "../core/catcherror.js";
 import { SendPrivateMessageToMember  } from "../core/messaging.js";
 import { CreateRaidEmbed, GetRaidDataFromEmbed } from "./raidEmbed.js";
-import { ParseCommandAndGetRaidData, FormRaidInfoPrivateMessage, GlobalMention } from "./raidLines.js";
+import { ParseCommandAndGetRaidData, ParseCommandAndGetDate, FormRaidInfoPrivateMessage, GlobalMention } from "./raidLines.js";
 
 export function CreateRaid(message, args) {
     try {
@@ -18,6 +18,25 @@ export function CreateRaid(message, args) {
     } catch (e) {
         if (typeof (e) == 'object') CatchError(e, message.channel);
         else CatchRaidError(e, message.content, message.channel);
+    }
+    message.delete();
+}
+
+export function MoveRaid(message, args, raidMessage) {
+    try {
+        var data = GetRaidDataFromEmbed(raidMessage.embeds[0]);
+        data.date = ParseCommandAndGetDate(args);
+        var embed = CreateRaidEmbed(data);
+        raidMessage.edit(embed);
+
+        data.members.forEach(function (discord_id) {
+            if (discord_id == "слот свободен") return;
+            var member = message.guild.members.cache.find(user => user.id == discord_id);
+            SendPrivateMessageToMember(member, FormRaidInfoPrivateMessage(data, "Активность на которую вы записывались была перенесена:"));
+        });
+    } catch (e) {
+        if (typeof (e) == 'object') CatchError(e, message.channel);
+        else CatchErrorAndDeleteByTimeout(e, message.content, message.channel);
     }
     message.delete();
 }
