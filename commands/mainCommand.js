@@ -2,7 +2,8 @@ import { Command } from "./command.js";
 import config from "../config.json" assert {type: "json"};
 
 import { CommandManager } from "./commandManager.js"
-import { CreateRaid, AsyncGetPlannedRaids } from "../raid/raid.js"
+import { AsyncGetPlannedRaids } from "../raid/raidMisc.js"
+import { CreateRaid } from "../raid/raidManagement.js"
 
 class MainCommand extends Command {
     Run(args, message) {

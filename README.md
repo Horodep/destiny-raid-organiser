@@ -1,4 +1,4 @@
-# mamanda
+# destiny-raid-organiser
 This is a discord bot created to manage raid appointments in the game Destiny 2.
 
 ## Short list of commands:
@@ -33,7 +33,7 @@ This is a discord bot created to manage raid appointments in the game Destiny 2.
         ]
     },
     "roles"         :{
-        "everyone"      : "000000000000000000"
+        "mention"       : "000000000000000000"
     },
     "channels"      :{
         "raids"         : [

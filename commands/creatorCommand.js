@@ -1,13 +1,13 @@
 import { Command } from "./command.js";
 import { CatchErrorAndDeleteByTimeout } from "../core/catcherror.js";
-import { GetRaidAuthor } from "../raid/raid.js";
+import { GetRaidAuthorFromMessage } from "../raid/raidMisc.js";
 
 class CreatorCommand extends Command {
     async Run(args, message) {
         try{
             var raidMessage = await message.channel.messages.fetch(message.reference.messageId);
 
-            if (message.author.id == GetRaidAuthor(raidMessage).id) {
+            if (message.author.id == GetRaidAuthorFromMessage(raidMessage).id) {
                 Command.prototype.SaveRun.call(this, args, message);
             } else {
                 throw("Вы не являетесь автором сбора. Вы не можете им управлять.");

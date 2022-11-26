@@ -1,4 +1,5 @@
-import { AddRaidMember, RemoveRaidMember, KickRaidMember, CancelRaid } from "../raid/raid.js";
+import { AddRaidMember, RemoveRaidMember, KickRaidMember, CancelRaid } from "../raid/raidManagement.js";
+import { CatchErrorAndDeleteByTimeout } from "../core/catcherror.js";
 
 export async function AsyncMessageReactionAdd(reaction, user) {
 	try {
