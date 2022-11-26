@@ -18,7 +18,7 @@ export function ParseCommandAndGetRaidData(args, member) {
     if (numberOfPlaces != null) raidName = raidName.replace(numberOfPlaces[0], "").trim();
     var numberOfPlaces = (numberOfPlaces == null) ? 6 : numberOfPlaces[0].match(/\d+/);
 
-    return new RaidData(raidName, description, date, numberOfPlaces, [], [], member, member.user.avatarURL());
+    return new RaidData(raidName, description, date, numberOfPlaces, [], [], member, member.user.avatarURL(), member.guild.id);
 }
 
 export function ParseCommandAndGetDate(args) {
@@ -40,5 +40,5 @@ export function FormRaidInfoPrivateMessage(data, message) {
 }
 
 export function GetGlobalMentionForGuild(guildId){
-    return guildId ? "<@&" + config.roles.mention + ">" : "";
+    return guildId ? "<@&" + config.guilds.find(g => g.id == guildId).mention + ">" : "";
 }

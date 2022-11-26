@@ -10,9 +10,7 @@ class CreatorCommand extends Command {
                 throw("Данное сообщение может быть использовано только как ответ на сообщение рейда.");
 
             var raidMessage = await message.channel.messages.fetch(message.reference.messageId);
-            if (raidMessage.embeds.length == 0)
-                throw("Сообщение не распознано как рейд.");
-
+            
             if (message.author.id != GetRaidAuthorFromMessage(raidMessage).id)
                 throw("Вы не являетесь автором сбора. Вы не можете им управлять.");
 

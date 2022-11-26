@@ -1,13 +1,13 @@
 import { CatchError, CatchErrorAndDeleteByTimeout, CatchRaidError } from "../core/catcherror.js";
 import { SendPrivateMessageToMember  } from "../core/messaging.js";
-import { CreateRaidEmbed, GetRaidDataFromEmbed } from "./raidEmbed.js";
+import { CreateRaidMessage, GetRaidDataFromMessage } from "./raidEmbed.js";
 import { ParseCommandAndGetRaidData, ParseCommandAndGetDate, FormRaidInfoPrivateMessage } from "./raidLines.js";
 
 export function CreateRaid(message, args) {
     try {
         var data = ParseCommandAndGetRaidData(args, message.member);
         data.AddRaidMember(message.member.id);
-        var embed = CreateRaidEmbed(data);
+        var embed = CreateRaidMessage(data);
         
         message.channel.send(embed).then((msg) => {
             msg.react(":yes:1045279820910702614");
@@ -22,9 +22,9 @@ export function CreateRaid(message, args) {
 
 export function MoveRaid(message, args, raidMessage) {
     try {
-        var data = GetRaidDataFromEmbed(raidMessage.embeds[0]);
+        var data = GetRaidDataFromMessage(raidMessage);
         data.date = ParseCommandAndGetDate(args);
-        var embed = CreateRaidEmbed(data);
+        var embed = CreateRaidMessage(data);
         raidMessage.edit(embed);
 
         data.members.forEach(function (discord_id) {
@@ -34,29 +34,29 @@ export function MoveRaid(message, args, raidMessage) {
         });
     } catch (e) {
         if (typeof (e) == 'object') CatchError(e, message.channel);
-        else CatchErrorAndDeleteByTimeout(e, message.content, message.channel);
+        else CatchErrorAndDeleteByTimeout(e, message.channel, 10000);
     }
     message.delete();
 }
 
 export function AddRaidMember(message, user) {
-    var data = GetRaidDataFromEmbed(message.embeds[0]);
+    var data = GetRaidDataFromMessage(message);
     if (data.members.length == data.numberOfPlaces) return;
     data.AddRaidMember(user.id);
     data.RemoveFromLeftField(user.id);
-    message.edit(CreateRaidEmbed(data));
+    message.edit(CreateRaidMessage(data));
 }
 
 export function RemoveRaidMember(message, user, showAsLeaver) {
-    var data = GetRaidDataFromEmbed(message.embeds[0]);
+    var data = GetRaidDataFromMessage(message);
     if (!data.members.includes(user.id)) return;
     data.RemoveRaidMember(user.id);
     if (showAsLeaver) data.AddToLeftField(user.id);
-    message.edit(CreateRaidEmbed(data));
+    message.edit(CreateRaidMessage(data));
 }
 
 export function KickRaidMember(message, user, reaction) {
-    var data = GetRaidDataFromEmbed(message.embeds[0]);
+    var data = GetRaidDataFromMessage(message);
     if (data.author.id != user.id) {
         user.send("Вы не являетесь автором сбора. Вы не можете им управлять.");
         return;
@@ -68,11 +68,11 @@ export function KickRaidMember(message, user, reaction) {
         var member = message.guild.members.cache.find(user => user.id == userId);
         SendPrivateMessageToMember(member, FormRaidInfoPrivateMessage(data, "Автор сбора отказался от вашего участия в активности, в которую вы записывались."));
     }
-    message.edit(CreateRaidEmbed(data));
+    message.edit(CreateRaidMessage(data));
 }
 
 export function CancelRaidByEmoji(message, user) {
-    var data = GetRaidDataFromEmbed(message.embeds[0]);
+    var data = GetRaidDataFromMessage(message);
     if (data.author.id != user.id) {
         user.send("Вы не являетесь автором сбора. Вы не можете его отменить.");
         return;
@@ -81,7 +81,7 @@ export function CancelRaidByEmoji(message, user) {
 }
 
 export function CancelRaidByMessage(message, args, raidMessage) {
-    var data = GetRaidDataFromEmbed(raidMessage.embeds[0]);
+    var data = GetRaidDataFromMessage(raidMessage);
     CancelRaid(data, raidMessage);
     message.delete();
 }
@@ -101,7 +101,7 @@ export function ForcedAddRaidMember(message, args) {
         AddRaidMember(msg, { id: args[2] });
         var member = message.guild.members.cache.find(user => user.id == args[2]);
         setTimeout(() => { message.delete(); }, 5000);
-        var data = GetRaidDataFromEmbed(msg.embeds[0]);
+        var data = GetRaidDataFromMessage(message);
         SendPrivateMessageToMember(member, FormRaidInfoPrivateMessage(data, "Гильдмастер добавил вас в сбор активности."));
     });
 }
@@ -112,7 +112,7 @@ export function ForcedRemoveRaidMember(message, args) {
         RemoveRaidMember(msg, { id: args[2] });
         var member = message.guild.members.cache.find(user => user.id == args[2]);
         setTimeout(() => { message.delete(); }, 5000);
-        var data = GetRaidDataFromEmbed(msg.embeds[0]);
+        var data = GetRaidDataFromMessage(message);
         SendPrivateMessageToMember(member, FormRaidInfoPrivateMessage(data, "Гильдмастер отказался от вашего участия в активности, в которую вы записывались."));
     });
 }

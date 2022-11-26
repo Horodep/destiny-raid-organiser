@@ -6,8 +6,9 @@ export class RaidData {
     members = [];
     left = [];
     author; // .displayName , .id , .user.avatarURL
+    guildId;
 
-    constructor(raidName, description, date, numberOfPlaces, members, left, author, avatarURL) {
+    constructor(raidName, description, date, numberOfPlaces, members, left, author, avatarURL, guildId) {
         this.raidName = raidName;
         this.description = description;
         this.date = date;
@@ -16,6 +17,7 @@ export class RaidData {
         this.left = left;
         this.author = author;
         this.author.avatarURL = avatarURL;
+        this.guildId = guildId;
     }
 
     get dateString() {

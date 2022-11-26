@@ -3,7 +3,7 @@ import { RaidData } from "./raidData.js";
 import { EmbedBuilder } from "discord.js";
 import { GetGlobalMentionForGuild } from "./raidLines.js";
 
-export function CreateRaidEmbed(data, guildId, customTimestamp) {
+export function CreateRaidMessage(data, customTimestamp) {
     if (data.header.length > 256)
         throw 'Длина заголовка сбора не может быть больше 256 символов.';
     else if (data.description != null && data.description.length > 2048)
@@ -11,7 +11,7 @@ export function CreateRaidEmbed(data, guildId, customTimestamp) {
     else if (data.numberOfPlaces == 1)
         throw 'Активность можно собрать не менее, чем на двоих участников.';
 
-    var mention = data.roleTag ? data.roleTag.join(' ') : GetGlobalMentionForGuild(guildId);
+    var mention = data.roleTag ? data.roleTag.join(' ') : GetGlobalMentionForGuild(data.guildId);
 
     var { field0, field1, left } = data.FormFields()
     var embed = new EmbedBuilder()
@@ -30,8 +30,9 @@ export function CreateRaidEmbed(data, guildId, customTimestamp) {
     return { content: mention, embeds: [embed] };
 }
 
-export function GetRaidDataFromEmbed(embed) {
-    CheckEmbedIfRaid(embed);
+export function GetRaidDataFromMessage(message) {
+    CheckMessageIfRaid(message);
+    var embed = message.embeds[0];
     var dateString = embed.author.name.split(' Активность: ')[0].replace(/,.*? в /g, " ");
     var arr = dateString.split(/[ .:]/g);
     var date = new Date(arr[2], arr[1] - 1, arr[0], arr[3], arr[4]);
@@ -58,12 +59,16 @@ export function GetRaidDataFromEmbed(embed) {
             displayName: embed.footer.text.split(' | ')[0].replace("Собрал: ", ""),
             id: embed.footer.text.split(' | ')[1].replace("id: ", "")
         },
-        embed.footer.iconURL
+        embed.footer.iconURL,
+        message.guild.id
     );
 }
 
-function CheckEmbedIfRaid(embed) {
+function CheckMessageIfRaid(message) {
+    if (message.embeds.length == 0)
+        throw("Сообщение не распознано как рейд.");
+
     const regex = new RegExp(/\d{2}.\d{2}.\d{2}.+ в \d{2}:\d{2} .+: .+/m);
-    if(!regex.test(embed.author.name))
+    if(!regex.test(message.embeds[0].author.name))
         throw 'Сообщение не распознано как рейд.';
 }
