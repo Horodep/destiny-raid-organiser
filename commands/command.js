@@ -9,14 +9,14 @@ export class Command {
         this.callback = callback;
     }
 
-    Run(args, message) {
-        this.SaveRun(args, message);
+    Run(args, message, raidMessage) {
+        this.SaveRun(args, message, raidMessage);
     }
 
-    async SaveRun(args, message) {
+    async SaveRun(args, message, raidMessage) {
         try {
             if (this.status > 1) throw ("Команда отключена");
-            else await this.callback(args, message);
+            else await this.callback(args, message, raidMessage);
         } catch (e) {
             CatchError(e, message.channel);
         }
