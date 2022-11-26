@@ -28,10 +28,10 @@ export function GetCreatorCommandsArray() {
     const off = 2;
     var array = [];
 
-    array.push(new CreatorCommand("!перенос ДД.ММ ЧЧ:ММ", wip, false, "перенос рейда, _должно быть ответом на сообщение рейда_", async function (args, message, raidMessage) {
+    array.push(new CreatorCommand("!перенос ДД.ММ ЧЧ:ММ", on, false, "перенос рейда, _должно быть ответом на сообщение рейда_", async function (args, message, raidMessage) {
         MoveRaid(message, args, raidMessage);
     }));
-    array.push(new CreatorCommand("!отмена", wip, false, "отмена рейда, _должно быть ответом на сообщение рейда_", async function (args, message, raidMessage) {
+    array.push(new CreatorCommand("!отмена", on, false, "отмена рейда, _должно быть ответом на сообщение рейда_", async function (args, message, raidMessage) {
         CancelRaidByMessage(message, args, raidMessage);
     }));
     array.push(new CreatorCommand("!бронь @DiscordTag", wip, false, "забронировать место за стражем, _должно быть ответом на сообщение рейда_", async function (args, message, raidMessage) {
