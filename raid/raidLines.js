@@ -14,14 +14,11 @@ export function ParseCommandAndGetRaidData(args, member) {
 
     var description = (commandRaidInfo.indexOf(',') == -1 ? null : commandRaidInfo.substr(commandRaidInfo.indexOf(',') + 1));
 
-    var regexpRoleTag = /<@.\d+>/g;
-    var roleTag = (description == null ? null : description.match(regexpRoleTag));
-
     var numberOfPlaces = commandRaidInfo.match(/^\[\d+\]/);
     if (numberOfPlaces != null) raidName = raidName.replace(numberOfPlaces[0], "").trim();
     var numberOfPlaces = (numberOfPlaces == null) ? 6 : numberOfPlaces[0].match(/\d+/);
 
-    return new RaidData(raidName, description, roleTag, date, numberOfPlaces, [], [], member, member.user.avatarURL());
+    return new RaidData(raidName, description, date, numberOfPlaces, [], [], member, member.user.avatarURL());
 }
 
 export function ParseCommandAndGetDate(args) {

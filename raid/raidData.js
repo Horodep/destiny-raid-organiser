@@ -1,17 +1,15 @@
 export class RaidData {
     raidName;
     description;
-    roleTag;
     date;
     numberOfPlaces;
     members = [];
     left = [];
     author; // .displayName , .id , .user.avatarURL
 
-    constructor(raidName, description, roleTag, date, numberOfPlaces, members, left, author, avatarURL) {
+    constructor(raidName, description, date, numberOfPlaces, members, left, author, avatarURL) {
         this.raidName = raidName;
         this.description = description;
-        this.roleTag = roleTag;
         this.date = date;
         this.numberOfPlaces = numberOfPlaces;
         this.members = members;
@@ -39,6 +37,11 @@ export class RaidData {
 
     get icon() {
         return this.author?.avatarURL;
+    }
+
+    get roleTag() {
+        var regexpRoleTag = /<@.\d+>/g;
+        return (this.description == null ? null : this.description.match(regexpRoleTag));
     }
 
     FormFields() {

@@ -1,7 +1,7 @@
 import { CatchError, CatchErrorAndDeleteByTimeout, CatchRaidError } from "../core/catcherror.js";
 import { SendPrivateMessageToMember  } from "../core/messaging.js";
 import { CreateRaidEmbed, GetRaidDataFromEmbed } from "./raidEmbed.js";
-import { ParseCommandAndGetRaidData, ParseCommandAndGetDate, FormRaidInfoPrivateMessage, GlobalMention } from "./raidLines.js";
+import { ParseCommandAndGetRaidData, ParseCommandAndGetDate, FormRaidInfoPrivateMessage } from "./raidLines.js";
 
 export function CreateRaid(message, args) {
     try {
@@ -9,8 +9,6 @@ export function CreateRaid(message, args) {
         data.AddRaidMember(message.member.id);
         var embed = CreateRaidEmbed(data);
         
-        message.channel.send(data.roleTag ? data.roleTag.join(' ') : GlobalMention());
-
         message.channel.send(embed).then((msg) => {
             msg.react(":yes:1045279820910702614");
             msg.react(":no:1045279822621986876");

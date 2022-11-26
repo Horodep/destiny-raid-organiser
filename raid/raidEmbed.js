@@ -1,7 +1,7 @@
 import { CatchError } from "../core/catcherror.js";
 import { RaidData } from "./raidData.js";
 import { EmbedBuilder } from "discord.js";
-
+import { GlobalMention } from "./raidLines.js";
 
 export function CreateRaidEmbed(data, customTimestamp) {
     if (data.header.length > 256)
@@ -10,6 +10,8 @@ export function CreateRaidEmbed(data, customTimestamp) {
         throw 'Длина комментария сбора не может быть больше 2048 символов.';
     else if (data.numberOfPlaces == 1)
         throw 'Активность можно собрать не менее, чем на двоих участников.';
+
+    var mention = data.roleTag ? data.roleTag.join(' ') : GlobalMention();
 
     var { field0, field1, left } = data.FormFields()
     var embed = new EmbedBuilder()
@@ -25,7 +27,7 @@ export function CreateRaidEmbed(data, customTimestamp) {
     if (data.description != null) embed.setDescription(data.description);
     if (left.length > 8) embed.addFields([ {name: "Отменили запись:", value: left }] )
 
-    return { embeds: [embed] };
+    return { content: mention, embeds: [embed] };
 }
 
 export function GetRaidDataFromEmbed(embed) {
@@ -48,7 +50,6 @@ export function GetRaidDataFromEmbed(embed) {
     return new RaidData(
         embed.author.name.split(' Активность: ')[1],
         embed.description,
-        "",
         date,
         linesArray.length,
         linesArray.filter(line => line != "слот свободен"),

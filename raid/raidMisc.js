@@ -9,23 +9,18 @@ export function ClearRaidList(client) {
         console.log("now:", today);
         messages.sort((a, b) => a.id > b.id ? 1 : -1).forEach(message => {
             if (message.pinned) return;
-            console.log(message.content, message.author.bot);
+            
             if (!message.author.bot) {
-                console.log("message deleted");
+                console.log("non bot message deleted");
                 message.delete();
                 return;
             }
-            if (message.content != "") {
+
+            var data = GetRaidDataFromEmbed(message.embeds[0]);
+            console.log(data.date, data.header);
+            if (data.date < today) {
+                console.log("raid deleted");
                 message.delete();
-            } else {
-                var data = GetRaidDataFromEmbed(message.embeds[0]);
-
-                console.log(data.date, data.header);
-                if (data.date < today) {
-                    console.log("have to be moved");
-
-                    message.delete();
-                }
             }
         });
     })
