@@ -2,7 +2,7 @@ import { Command } from "./command.js";
 import config from "../config.json" assert {type: "json"};
 
 import { CommandManager } from "./commandManager.js"
-import { AsyncGetPlannedRaids } from "../raid/raidMisc.js"
+import { AsyncGetPlannedRaids, ClearRaidList } from "../raid/raidMisc.js"
 import { CreateRaid } from "../raid/raidManagement.js"
 
 class MainCommand extends Command {
@@ -26,6 +26,9 @@ export function GetMainCommandsArray() {
     }));
     array.push(new MainCommand("!myraids", wip, false, "список рейдов, в которые записался страж;", async function (args, message) {
         await AsyncGetPlannedRaids(message, args.length > 1 ? args[1] : message.author.id)
+    }));
+    array.push(new MainCommand("!clean", on, false, "очистить канал от старых рейдов;", async function (args, message) {
+        await ClearRaidList(message);
     }));
     array.push(new MainCommand("!сбор ДД.ММ ЧЧ:ММ название активности, комментарии", on, false, "создание сбора на активность на 6 человек;", async function (args, message) {
         CreateRaid(message, args);

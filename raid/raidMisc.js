@@ -1,27 +1,35 @@
 import config from "../config.json" assert {type: "json"};
-import { GetRaidDataFromEmbed } from "./raidEmbed.js";
+import { GetRaidDataFromMessage } from "./raidEmbed.js";
 
-export function ClearRaidList(client) {
-    var raid_channel = client.channels.cache.get(config.channels.raids);
+export function ClearRaidList(message) {
+    if (!config.guilds.map(guild => guild.raids).includes(message.channel.id)) return;
 
-    raid_channel.messages.fetch({ limit: 50 }).then(messages => {
+    var raid_channel = message.channel;
+
+    raid_channel.messages.fetch({ limit: 100 }).then(messages => {
         var today = new Date();
         console.log("now:", today);
-        messages.sort((a, b) => a.id > b.id ? 1 : -1).forEach(message => {
-            if (message.pinned) return;
+        messages.sort((a, b) => a.id > b.id ? 1 : -1).forEach(msg => {
+            if (msg.pinned) return;
             
-            if (!message.author.bot) {
+            if (!msg.author.bot) {
                 console.log("non bot message deleted");
-                message.delete();
+                msg.delete();
                 return;
             }
 
-            var data = GetRaidDataFromEmbed(message.embeds[0]);
-            console.log(data.date, data.header);
-            if (data.date < today) {
-                console.log("raid deleted");
-                message.delete();
+            try{
+                var data = GetRaidDataFromMessage(msg);
+                console.log(data.date, data.header);
+                if (data.date < today) {
+                    console.log("raid deleted");
+                    msg.delete();
+                }
+            }catch{
+                console.log("bot non raid message deleted");
+                msg.delete();
             }
+
         });
     })
 }
