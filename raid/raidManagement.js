@@ -80,6 +80,7 @@ export function CancelRaid(message, user) {
         return;
     }
     data.members.forEach(function (discord_id) {
+        if (discord_id == "слот свободен") return;
         var member = message.guild.members.cache.find(user => user.id == discord_id);
         SendPrivateMessageToMember(member, FormRaidInfoPrivateMessage(data, "Активность на которую вы записывались была отменена автором сбора."));
     });
