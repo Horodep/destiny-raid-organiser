@@ -73,18 +73,28 @@ export function KickRaidMember(message, user, reaction) {
     message.edit(CreateRaidEmbed(data));
 }
 
-export function CancelRaid(message, user) {
+export function CancelRaidByEmoji(message, user) {
     var data = GetRaidDataFromEmbed(message.embeds[0]);
     if (data.author.id != user.id) {
         user.send("Вы не являетесь автором сбора. Вы не можете его отменить.");
         return;
     }
+    CancelRaid(data, message);
+}
+
+export function CancelRaidByMessage(message, args, raidMessage) {
+    var data = GetRaidDataFromEmbed(raidMessage.embeds[0]);
+    CancelRaid(data, raidMessage);
+    message.delete();
+}
+
+export function CancelRaid(data, raidMessage) {
     data.members.forEach(function (discord_id) {
         if (discord_id == "слот свободен") return;
-        var member = message.guild.members.cache.find(user => user.id == discord_id);
+        var member = raidMessage.guild.members.cache.find(user => user.id == discord_id);
         SendPrivateMessageToMember(member, FormRaidInfoPrivateMessage(data, "Активность на которую вы записывались была отменена автором сбора."));
     });
-    setTimeout(() => { message.delete(); }, 150);
+    setTimeout(() => { raidMessage.delete(); }, 150);
 }
 
 export function ForcedAddRaidMember(message, args) {
