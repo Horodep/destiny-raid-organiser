@@ -20,7 +20,7 @@ export class CommandManager {
             .setTimestamp()
             embed.addFields(
                 this.commandList
-                    .filter(c => (c.status < 2 && c.description != ''))
+                    .filter(c => (c.status < 1 && c.description != ''))
                     .sort((a, b) => a.name > b.name ? 1 : -1)
                     .map((command) => ({ name: command.usage, value: command.description }))
 
