@@ -1,18 +1,45 @@
 import schedule from 'node-schedule';
-import { CatchShedulerError } from "./catcherror.js";
+import config from "../config.json" assert {type: "json"};
 import { client } from "../index.js"
-
+import { CatchShedulerError } from "./catcherror.js";
 import { ClearRaidList } from "../raid/raidMisc.js";
+import { GetRaidDataFromMessage } from "../raid/raidEmbed.js";
+import { InformRaidMembers } from "../raid/raidManagement.js";
 
 export function InitSheduler() {
-	schedule.scheduleJob('0 3 * * *', () => SaveRun(() => ClearRaidList(client)));
+	const raidChannels = config.guilds.map(guild => guild.raids);
+	raidChannels.forEach(id => {
+		var raid_channel = GetChannel(id);
+		raid_channel?.messages.fetch({ limit: 100 }).then(messages => {
+			messages.sort((a, b) => a.id > b.id ? 1 : -1).forEach(msg => {
+				try{
+					var data = GetRaidDataFromMessage(msg);
+					SheduleRaid(data, msg);
+				}catch(e){
+					if(e != "Сообщение не распознано как рейд.")
+						CatchShedulerError(e, client);
+				}
+			});
+		})
+	})
+	
 }
 
-export function SheduleRaid(messageId, datetime) {
-	// shedule raid messaging (time -15 m)
-	// shedule raid messaging (time +2 h)
-	schedule.scheduleJob('57 9 26 11 *', () => SaveRun(() => console.log(456)));
-	console.log(123);
+export function SheduleRaid(data, message) {
+	console.log(data.date, data.header);
+	var inform_date = new Date(data.date.getTime() - 15 * 60 * 1000);
+	var delete_date = new Date(data.date.getTime() + 2 * 60 * 60 * 1000);
+
+	var text = "Рейд, в который вы записались, начнется через 15 минут!";
+	schedule.scheduleJob(message.id + "inform", inform_date, () => SaveRun(() => InformRaidMembers(data, text, message.guild)));
+	schedule.scheduleJob(message.id + "delete", delete_date, () => SaveRun(() => message.delete()));
+	console.log("События запланированы.");
+}
+
+export function CancelSheduledRaid(message) {
+	schedule.scheduledJobs[message.id + "inform"]?.cancel();
+	schedule.scheduledJobs[message.id + "delete"]?.cancel();
+	console.log("События отменены.");
 }
 
 async function SaveRun(callback) {
