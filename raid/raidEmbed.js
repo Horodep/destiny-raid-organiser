@@ -21,6 +21,7 @@ export function CreateRaidMessage(data, customTimestamp) {
         .addFields([
             { name: 'Идут:', value: field0, inline : true },
             { name: 'Идут:', value: field1, inline : true },
+            //{ name: 'Местное время:', value: data.dateWithTimezone, inline : false },
         ])
         .setFooter({ text: data.footer, iconURL: data.icon })
     if (customTimestamp != null) embed.setTimestamp(customTimestamp);
@@ -38,7 +39,7 @@ export function GetRaidDataFromMessage(message) {
     var date = new Date(arr[2], arr[1] - 1, arr[0], arr[3], arr[4]);
     var linesArray = (embed.fields[0].value + "\n" + embed.fields[1].value).replace(/[<@>]/g, '').split('\n');
     var left = embed.fields.length == 2 ? [] :
-        embed.fields[2].value.split('\n').map(function (line) {
+        embed.fields.find(f => f.name == "Отменили запись:")?.value.split('\n').map(function (line) {
             try {
                 var date = new Date(line.match(new RegExp("\`.*?\`"))[0].substring(1, 12));
                 var id = line.match(new RegExp("<.*?>"))[0].replace(/\D/g, '');

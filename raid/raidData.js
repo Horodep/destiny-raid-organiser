@@ -46,6 +46,10 @@ export class RaidData {
         return (this.description == null ? null : this.description.match(regexpRoleTag));
     }
 
+    get dateWithTimezone() {
+        return "<t:" + this.date.getTime()/1000 + ">";
+    }
+
     FormFields() {
         var prefilter = this.AddSlotsToMembers().map(m => (m.charAt(0) == 'с' ? m : "<@" + m + ">"));
         var field0 = prefilter.filter((_, i) => i < this.numberOfPlaces / 2).join("\n");

@@ -18,7 +18,7 @@ export class CommandManager {
             .setThumbnail('https://images-ext-1.discordapp.net/external/veZptUu_KDKmwtUJX5QT3QxESYCaRp4_k0XUwEQxubo/https/i.imgur.com/e9DIB8e.png')
             .setFooter({ text: 'Horobot', iconURL: 'https://cdn.discordapp.com/avatars/564870880853753857/127385781e26e7dcfdbe312de1843ddf.png' })
             .setTimestamp()
-            embed.addFields(
+            .addFields(
                 this.commandList
                     .filter(c => (c.status < 1 && c.description != ''))
                     .sort((a, b) => a.name > b.name ? 1 : -1)
