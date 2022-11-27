@@ -1,4 +1,4 @@
-import { CatchError } from "../core/catcherror.js";
+import { CatchError, CatchErrorAndDeleteByTimeout } from "../core/catcherror.js";
 
 export class Command {
     constructor(usage, status, apiDependency, description, callback) {
@@ -18,7 +18,12 @@ export class Command {
             if (this.status > 1) throw ("Команда отключена");
             else await this.callback(args, message, raidMessage);
         } catch (e) {
-            CatchError(e, message.channel);
+            if (raidMessage){
+                CatchErrorAndDeleteByTimeout(e, message.channel, 10000);
+                setTimeout(() => { message.delete(); }, 10000);
+            }else{
+                CatchError(e, message.channel);
+            }
         }
     }
 

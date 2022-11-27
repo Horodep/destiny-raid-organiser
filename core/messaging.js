@@ -41,6 +41,7 @@ export function SendPrivateMessage(guild, args){
 
 export function SendPrivateMessageToMember(discordMember, text){
     try {
+        if (discordMember.user.bot) return;
         discordMember.send(text);
         console.log("pm " + discordMember.displayName);
         Logging(discordMember, text);

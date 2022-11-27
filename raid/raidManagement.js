@@ -23,18 +23,15 @@ export function CreateRaid(message, args) {
 }
 
 export function MoveRaid(message, args, raidMessage) {
-    try {
-        var data = GetRaidDataFromMessage(raidMessage);
-        data.date = ParseCommandAndGetDate(args);
-        var embed = CreateRaidMessage(data);
-        raidMessage.edit(embed);
-        CancelSheduledRaid(raidMessage);
-        SheduleRaid(data, raidMessage);
-        InformRaidMembers(data, "Активность на которую вы записывались была перенесена:", message.guild);
-    } catch (e) {
-        if (typeof (e) == 'object') CatchError(e, message.channel);
-        else CatchErrorAndDeleteByTimeout(e, message.channel, 10000);
-    }
+    var data = GetRaidDataFromMessage(raidMessage);
+    data.date = ParseCommandAndGetDate(args);
+    var embed = CreateRaidMessage(data);
+    raidMessage.edit(embed);
+
+    CancelSheduledRaid(raidMessage);
+    SheduleRaid(data, raidMessage);
+    InformRaidMembers(data, "Активность на которую вы записывались была перенесена:", message.guild);
+    
     message.delete();
 }
 
