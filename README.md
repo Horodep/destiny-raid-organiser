@@ -46,12 +46,14 @@ In guilds: id - guild id, mention - role id for glogal mentions, raids - raid ch
             "title"         : "guild1",
             "id"            : "000000000000000000",
             "mention"       : "000000000000000000",
+            "ban"           : "000000000000000000",
             "raids"         : "000000000000000000"
         },
         {
             "title"         : "guild2",
             "id"            : "000000000000000000",
             "mention"       : "000000000000000000",
+            "ban"           : "000000000000000000",
             "raids"         : "000000000000000000"
         }
     ]

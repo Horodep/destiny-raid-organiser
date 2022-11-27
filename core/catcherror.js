@@ -60,11 +60,15 @@ export function CatchErrorAndDeleteByTimeout(e, channel, timeout) {
 }
 
 export function CatchRaidError(error, content, channel) {
-	channel.send(
-		"Неверный синтаксис: __" + error + "__" +
+	var line = 
+		error == "Вы не можете создавать рейды." ? 
+		"Ошибка сбора рейда: __" + error + "__" : 
+		"Ошибка сбора рейда: __" + error + "__" +
 		"\nДолжно быть:" +
 		"\n```!сбор ДД.ММ ЧЧ:ММ активность, комментарии```" +
-		"Вы написали:\n```" + content + "```").then((msg) => {
-			setTimeout(() => { msg.delete(); }, 30000);
+		"Вы написали:\n```" + content + "```"
+
+	channel.send(line).then((msg) => {
+			setTimeout(() => { msg.delete(); }, 15000);
 		});
 }

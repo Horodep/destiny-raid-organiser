@@ -3,9 +3,11 @@ import { SendPrivateMessageToMember  } from "../core/messaging.js";
 import { CreateRaidMessage, GetRaidDataFromMessage } from "./raidEmbed.js";
 import { ParseCommandAndGetRaidData, ParseCommandAndGetDate, FormRaidInfoPrivateMessage } from "./raidLines.js";
 import { SheduleRaid, CancelSheduledRaid } from "../core/sheduler.js";
+import config from "../config.json" assert {type: "json"};
 
 export function CreateRaid(message, args) {
     try {
+        if (CheckIfMemberBanned(message.member)) throw 'Вы не можете создавать рейды.';     
         var data = ParseCommandAndGetRaidData(args, message.member);
         data.AddRaidMember(message.member.id);
         var embed = CreateRaidMessage(data);
@@ -36,6 +38,9 @@ export function MoveRaid(message, args, raidMessage) {
 }
 
 export function AddRaidMember(message, user) {
+    var discordMember = message.guild.members.cache.find(member => member.user.id == user.id);
+    if (CheckIfMemberBanned(discordMember)) return;
+    
     var data = GetRaidDataFromMessage(message);
     if (data.members.length == data.numberOfPlaces) return;
     data.AddRaidMember(user.id);
@@ -129,4 +134,9 @@ export function InformRaidMembers(data, messageText, guild) {
         var member = guild.members.cache.find(user => user.id == discord_id);
         SendPrivateMessageToMember(member, FormRaidInfoPrivateMessage(data, messageText));
     });
+}
+
+export function CheckIfMemberBanned(discordMember){
+    var banRole = config.guilds.find(g => g.id == discordMember.guild.id).ban;
+    return (discordMember.roles.cache.find( role => role.id == banRole));
 }
