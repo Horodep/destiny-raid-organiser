@@ -54,7 +54,7 @@ export function RemoveRaidMember(message, user, showAsLeaver) {
     message.edit(CreateRaidMessage(data));
 }
 
-export function KickRaidMember(message, user, reaction) {
+export function KickRaidMemberByEmoji(message, user, reaction) {
     var data = GetRaidDataFromMessage(message);
     if (data.author.id != user.id) {
         user.send("Вы не являетесь автором сбора. Вы не можете им управлять.");

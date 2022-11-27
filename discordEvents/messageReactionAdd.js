@@ -1,4 +1,4 @@
-import { AddRaidMember, RemoveRaidMember, KickRaidMember, CancelRaidByEmoji } from "../raid/raidManagement.js";
+import { AddRaidMember, RemoveRaidMember, KickRaidMemberByEmoji, CancelRaidByEmoji } from "../raid/raidManagement.js";
 import { CatchErrorAndDeleteByTimeout } from "../core/catcherror.js";
 
 export async function AsyncMessageReactionAdd(reaction, user) {
@@ -38,7 +38,7 @@ function HandleRaids(reaction, user) {
 		case "8️⃣":
 		case "9️⃣":
 		case "0️⃣":
-			KickRaidMember(reaction.message, user, reaction);
+			KickRaidMemberByEmoji(reaction.message, user, reaction);
 			reaction.users.remove(user);
 			break;
 	}
