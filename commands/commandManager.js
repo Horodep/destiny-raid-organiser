@@ -1,6 +1,7 @@
 import { EmbedBuilder } from "discord.js";
 import { GetCreatorCommandsArray } from "./creatorCommand.js";
 import { GetMainCommandsArray } from "./mainCommand.js";
+import { GetRaidCommandsArray } from "./raidCommand.js";
 
 export class CommandManager {
     static commandList = [];
@@ -31,5 +32,6 @@ export class CommandManager {
     static Init() {
         Array.prototype.push.apply(this.commandList, GetCreatorCommandsArray());
         Array.prototype.push.apply(this.commandList, GetMainCommandsArray());
+        Array.prototype.push.apply(this.commandList, GetRaidCommandsArray());
     }
 }

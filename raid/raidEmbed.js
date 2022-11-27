@@ -47,7 +47,7 @@ export function GetRaidDataFromMessage(message) {
             } catch (e) {
                 CatchError(e);
             }
-        });
+        }) ?? [];
 
     return new RaidData(
         embed.author.name.split(' Активность: ')[1],
