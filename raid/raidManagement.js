@@ -54,6 +54,19 @@ export function RemoveRaidMember(message, user, showAsLeaver) {
     message.edit(CreateRaidMessage(data));
 }
 
+export function InviteRaidMember(message, args, raidMessage) {
+    if (args.length < 2) throw 'Указано недостаточно данных.';
+
+    var data = GetRaidDataFromMessage(raidMessage);
+    var discordId = args[1].replace(/\D/g, '');
+
+    AddRaidMember(raidMessage, { id: discordId });
+
+    var discordMember = message.guild.members.cache.find(member => member.user.id == discordId);
+    SendPrivateMessageToMember(discordMember, FormRaidInfoPrivateMessage(data, "Автор сбора добавил вас в активность."));
+    message.delete();
+}
+
 export function KickRaidMemberByEmoji(message, user, reaction) {
     var data = GetRaidDataFromMessage(message);
     if (data.author.id != user.id) {
