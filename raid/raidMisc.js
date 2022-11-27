@@ -37,7 +37,8 @@ export function ClearRaidList(message) {
 export async function AsyncGetPlannedRaids(message, discordMention) {
     var discordId = discordMention.replace(/\D/g, '');
 
-    var raid_channel = message.client.channels.cache.get(config.channels.raids);
+    var raid_channel_id = config.guilds.find(g => g.id == message.guild.id).raids;
+    var raid_channel = message.client.channels.cache.get(raid_channel_id);
     var messages = (await raid_channel.messages.fetch({ limit: 50 })).filter(m => m.embeds.length > 0);
     var raids = messages.map(m => GetRaidDataFromMessage(m)).sort((a, b) => a.date - b.date);
     var myraids = raids.filter(r => r?.members?.includes(discordId));

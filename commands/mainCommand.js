@@ -25,7 +25,7 @@ export function GetMainCommandsArray() {
     array.push(new MainCommand("!help", on, false, "список доступных команд;", async function (args, message) {
         if (args.length == 1) message.channel.send(CommandManager.GetHelp());
     }));
-    array.push(new MainCommand("!myraids", wip, false, "список рейдов, в которые записался страж;", async function (args, message) {
+    array.push(new MainCommand("!myraids", on, false, "список рейдов, в которые записался страж;", async function (args, message) {
         await AsyncGetPlannedRaids(message, args.length > 1 ? args[1] : message.author.id)
     }));
 
