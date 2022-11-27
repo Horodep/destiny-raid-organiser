@@ -10,6 +10,8 @@ export function CreateRaidMessage(data, customTimestamp) {
         throw 'Длина комментария сбора не может быть больше 2048 символов.';
     else if (data.numberOfPlaces == 1)
         throw 'Активность можно собрать не менее, чем на двоих участников.';
+    else if (data.numberOfPlaces > 12)
+        throw 'Максимальное количество участников — 12.';
 
     var mention = data.roleTag ? data.roleTag.join(' ') : GetGlobalMentionForGuild(data.guildId);
 
@@ -70,6 +72,6 @@ function CheckMessageIfRaid(message) {
         throw("Сообщение не распознано как рейд.");
 
     const regex = new RegExp(/\d{2}.\d{2}.\d{2}.+ в \d{2}:\d{2} .+: .+/m);
-    if(!regex.test(message.embeds[0].author.name))
+    if(!regex.test(message.embeds[0]?.author?.name))
         throw 'Сообщение не распознано как рейд.';
 }
