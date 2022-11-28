@@ -1,6 +1,6 @@
 import { Command } from "./command.js";
 import { CatchErrorAndDeleteByTimeout } from "../core/catcherror.js";
-import { InviteRaidMember, MoveRaid, CancelRaidByMessage } from "../raid/raidManagement.js";
+import { InviteRaidMember, MoveRaid, ChangeRaidDescription, CancelRaidByMessage } from "../raid/raidManagement.js";
 import { GetRaidAuthorFromMessage } from "../raid/raidMisc.js";
 
 class CreatorCommand extends Command {
@@ -30,6 +30,9 @@ export function GetCreatorCommandsArray() {
 
     array.push(new CreatorCommand("!перенос ДД.ММ ЧЧ:ММ", on, false, "перенос рейда, _должно быть ответом на сообщение рейда_", async function (args, message, raidMessage) {
         MoveRaid(message, args, raidMessage);
+    }));
+    array.push(new CreatorCommand("!комментарий новый комментарий", on, false, "изменить комментарий к рейду, _должно быть ответом на сообщение рейда_", async function (args, message, raidMessage) {
+        ChangeRaidDescription(message, args, raidMessage);
     }));
     array.push(new CreatorCommand("!отмена", on, false, "отмена рейда, _должно быть ответом на сообщение рейда_", async function (args, message, raidMessage) {
         CancelRaidByMessage(message, args, raidMessage);

@@ -42,7 +42,7 @@ export function FormRaidInfoPrivateMessage(data, message, oldData) {
             line += `\nСтарая дата проведения: ${GetDateString(oldData)}`
             break;
         case 'string':
-            line += `\nСтарое описание активности: ${GetDateString(oldData)}`
+            line += `\nСтарое описание активности: ${oldData}`
             break;
     }
     return line;

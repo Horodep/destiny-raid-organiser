@@ -38,6 +38,20 @@ export function MoveRaid(message, args, raidMessage) {
     message.delete();
 }
 
+export function ChangeRaidDescription(message, args, raidMessage) {
+    if (args.length < 2) throw 'Указано недостаточно данных.';
+
+    var data = GetRaidDataFromMessage(raidMessage);
+    var oldDescription = data.description;
+    data.description = args.filter((_, i) => i > 0).join(" ");
+    var embed = CreateRaidMessage(data);
+    raidMessage.edit(embed);
+
+    InformRaidMembers(data, "Коментарий к активности на которую вы записывались был изменен:", message.guild, oldDescription);
+    
+    message.delete();
+}
+
 export function AddRaidMember(message, user, forced) {
     var discordMember = message.guild.members.cache.find(member => member.user.id == user.id);
     if (CheckIfMemberHasBanRole(discordMember)) return;

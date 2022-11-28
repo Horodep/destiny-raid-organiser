@@ -25,7 +25,7 @@ export class RaidData {
     }
 
     get raidFullName() {
-        return this.raidName + " " + (this.description ?? ""); 
+        return this.raidName + (this.description ? ", " + this.description : ""); 
     }
 
     get header() {
