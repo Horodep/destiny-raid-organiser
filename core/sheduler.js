@@ -12,6 +12,7 @@ export function InitSheduler() {
 		raid_channel?.messages.fetch({ limit: 100 }).then(messages => {
 			messages.sort((a, b) => a.id > b.id ? 1 : -1).forEach(msg => {
 				try{
+					if (msg.client.user.id != msg.author.id) return;
 					var data = GetRaidDataFromMessage(msg);
 					SheduleRaid(data, msg);
 				}catch(e){

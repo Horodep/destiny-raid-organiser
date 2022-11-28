@@ -3,8 +3,9 @@ import { CatchErrorAndDeleteByTimeout } from "../core/catcherror.js";
 
 export async function AsyncMessageReactionAdd(reaction, user) {
 	try {
-		if(user.bot) return;
+		if (user.bot) return;
 		if (reaction.partial) await reaction.fetch();
+		if (reaction.client.user.id != reaction.message.author.id) return;
 		console.log(`${user.username} set reaction ${reaction._emoji.name}.`);
 
 		if (reaction.message.embeds[0]?.footer?.text.startsWith("Собрал")) HandleRaids(reaction, user);
