@@ -19,7 +19,7 @@ export class Command {
             else await this.callback(args, message, raidMessage);
         } catch (e) {
             if (raidMessage){
-                CatchErrorAndDeleteByTimeout(e, message.channel, 10000);
+                CatchErrorAndDeleteByTimeout(e, message.channel, 9500);
                 setTimeout(() => { message.delete(); }, 10000);
             }else{
                 CatchError(e, message.channel);

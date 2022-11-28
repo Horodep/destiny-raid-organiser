@@ -16,7 +16,7 @@ class CreatorCommand extends Command {
 
             Command.prototype.SaveRun.call(this, args, message, raidMessage);
         }catch(e){
-            CatchErrorAndDeleteByTimeout(e, message.channel, 10000);
+            CatchErrorAndDeleteByTimeout(e, message.channel, 9500);
             setTimeout(() => { message.delete(); }, 10000);
         }
     }
