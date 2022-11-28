@@ -47,7 +47,7 @@ export function ChangeRaidDescription(message, args, raidMessage) {
     var embed = CreateRaidMessage(data);
     raidMessage.edit(embed);
 
-    InformRaidMembers(data, "Коментарий к активности на которую вы записывались был изменен:", message.guild, oldDescription);
+    InformRaidMembers(data, "Коментарий к активности на которую вы записывались был изменен:", message.guild, oldDescription ?? "");
     
     message.delete();
 }
