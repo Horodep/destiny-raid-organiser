@@ -22,7 +22,7 @@ export function CreateRaidMessage(data, customTimestamp) {
         .setThumbnail('https://images-ext-2.discordapp.net/external/SfRL0Sj2a3O9vtAYpaC2OUG0r0vDipe2h8LeeZnFdf4/https/i.imgur.com/KBiRw8F.png')
         .addFields([
             { name: 'Идут:', value: field0, inline : true },
-            { name: 'Идут:', value: field1, inline : true },
+            { name: '\u200b', value: field1, inline : true },
             //{ name: 'Местное время:', value: data.dateWithTimezone, inline : false },
         ])
         .setFooter({ text: data.footer, iconURL: data.icon })
