@@ -54,7 +54,7 @@ export class RaidData {
         var prefilter = this.AddSlotsToMembers().map(m => (m.charAt(0) == 'с' ? m : "<@" + m + ">"));
         var field0 = prefilter.filter((_, i) => i < this.numberOfPlaces / 2).join("\n");
         var field1 = prefilter.filter((_, i) => i >= this.numberOfPlaces / 2).join("\n");
-        var left = this.left.map(m => "`" + GetShortDate(m.date) + "` <@" + m.id + ">").join("\n");
+        var left = this.left.map(m => "`" + GetShortDate(m.date) + "`" + (m.isKicked ? " :no_entry_sign:" : "") + " <@" + m.id + ">").join("\n");
         return { field0, field1, left };
     }
 
@@ -85,12 +85,13 @@ export class RaidData {
         }
     }
 
-    AddToLeftField(userId) {
+    AddToLeftField(userId, isKicked) {
         var index = this.left.findIndex(m => m.id == userId);
         if (index == -1) {
             this.left.push({
                 date: new Date(),
-                id: userId
+                id: userId,
+                isKicked: isKicked ?? false
             });
         }
     }

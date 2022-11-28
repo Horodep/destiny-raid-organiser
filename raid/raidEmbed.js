@@ -45,7 +45,8 @@ export function GetRaidDataFromMessage(message) {
             try {
                 var date = new Date(line.match(new RegExp("\`.*?\`"))[0].substring(1, 12));
                 var id = line.match(new RegExp("<.*?>"))[0].replace(/\D/g, '');
-                return { date: date, id: id };
+                var isKicked = line.includes("no_entry_sign");
+                return { date: date, id: id, isKicked: isKicked };
             } catch (e) {
                 CatchError(e);
             }

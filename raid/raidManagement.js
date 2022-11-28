@@ -37,22 +37,23 @@ export function MoveRaid(message, args, raidMessage) {
     message.delete();
 }
 
-export function AddRaidMember(message, user) {
+export function AddRaidMember(message, user, forced) {
     var discordMember = message.guild.members.cache.find(member => member.user.id == user.id);
     if (CheckIfMemberBanned(discordMember)) return;
     
     var data = GetRaidDataFromMessage(message);
+    if (!forced && data.left.find(m => m.id == user.id && m.isKicked)) return;
     if (data.members.length == data.numberOfPlaces) return;
     data.AddRaidMember(user.id);
     data.RemoveFromLeftField(user.id);
     message.edit(CreateRaidMessage(data));
 }
 
-export function RemoveRaidMember(message, user, showAsLeaver) {
+export function RemoveRaidMember(message, user) {
     var data = GetRaidDataFromMessage(message);
     if (!data.members.includes(user.id)) return;
     data.RemoveRaidMember(user.id);
-    if (showAsLeaver) data.AddToLeftField(user.id);
+    data.AddToLeftField(user.id);
     message.edit(CreateRaidMessage(data));
 }
 
@@ -62,7 +63,7 @@ export function InviteRaidMember(message, args, raidMessage) {
     var data = GetRaidDataFromMessage(raidMessage);
     var discordId = args[1].replace(/\D/g, '');
 
-    AddRaidMember(raidMessage, { id: discordId });
+    AddRaidMember(raidMessage, { id: discordId }, true);
 
     var discordMember = message.guild.members.cache.find(member => member.user.id == discordId);
     SendPrivateMessageToMember(discordMember, FormRaidInfoPrivateMessage(data, "Автор сбора добавил вас в активность."));
@@ -77,6 +78,7 @@ export function KickRaidMemberByEmoji(message, user, reaction) {
     }
     var userId = data.GetUserIdByPosition(reaction._emoji.name.charAt(0));
     data.RemoveRaidMember(userId);
+    data.AddToLeftField(userId, true);
 
     if (userId?.length > 0) {
         var member = message.guild.members.cache.find(user => user.id == userId);
