@@ -26,13 +26,14 @@ export function CreateRaid(message, args) {
 
 export function MoveRaid(message, args, raidMessage) {
     var data = GetRaidDataFromMessage(raidMessage);
+    var oldDate = data.date;
     data.date = ParseCommandAndGetDate(args);
     var embed = CreateRaidMessage(data);
     raidMessage.edit(embed);
 
     CancelSheduledRaid(raidMessage);
     SheduleRaid(data, raidMessage);
-    InformRaidMembers(data, "Активность на которую вы записывались была перенесена:", message.guild);
+    InformRaidMembers(data, "Активность на которую вы записывались была перенесена:", message.guild, oldDate);
     
     message.delete();
 }
@@ -108,11 +109,11 @@ export function CancelRaid(data, raidMessage) {
     setTimeout(() => { raidMessage.delete(); }, 150);
 }
 
-export function InformRaidMembers(data, messageText, guild) {
+export function InformRaidMembers(data, messageText, guild, oldData) {
     data.members.forEach(function (discord_id) {
         if (discord_id == "слот свободен") return;
         var member = guild.members.cache.find(user => user.id == discord_id);
-        SendPrivateMessageToMember(member, FormRaidInfoPrivateMessage(data, messageText));
+        SendPrivateMessageToMember(member, FormRaidInfoPrivateMessage(data, messageText, oldData));
     });
 }
 

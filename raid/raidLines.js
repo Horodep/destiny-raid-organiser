@@ -1,4 +1,4 @@
-import { RaidData } from "./raidData.js";
+import { RaidData, GetDateString } from "./raidData.js";
 import config from "../config.json" assert {type: "json"};
 
 export function ParseCommandAndGetRaidData(args, member) {
@@ -32,11 +32,20 @@ export function ParseCommandAndGetDate(args) {
     return date;
 }
 
-export function FormRaidInfoPrivateMessage(data, message) {
-    return `${message}
-> Активность: **${data.raidName}**
+export function FormRaidInfoPrivateMessage(data, message, oldData) {
+    var line = `${message}
+> Активность: **${data.raidFullName}**
 > Дата проведения: **${data.dateString}**
 > Автор сбора: **${data.author.displayName}**`;
+    switch (typeof (oldData)){
+        case 'object':
+            line += `\nСтарая дата проведения: ${GetDateString(oldData)}`
+            break;
+        case 'string':
+            line += `\nСтарое описание активности: ${GetDateString(oldData)}`
+            break;
+    }
+    return line;
 }
 
 export function GetGlobalMentionForGuild(guildId){

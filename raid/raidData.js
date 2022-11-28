@@ -21,12 +21,11 @@ export class RaidData {
     }
 
     get dateString() {
-        return "" + 
-            (this.date.getDate() < 10 ? "0" : "") + this.date.getDate() + "." +
-            (this.date.getMonth() < 9 ? "0" : "") + (this.date.getMonth() + 1) + "." +
-            this.date.getFullYear() + ", " + weekdayTranslaytor(this.date.getDay()) + " в " +
-            (this.date.getHours() < 10 ? "0" : "") + this.date.getHours() + ":" +
-            (this.date.getMinutes() < 10 ? "0" : "") + this.date.getMinutes();
+        return GetDateString(this.date);
+    }
+
+    get raidFullName() {
+        return this.raidName + " " + (this.description ?? ""); 
     }
 
     get header() {
@@ -117,6 +116,15 @@ function GetShortDate(date) {
     return "" +
         (date.getMonth() < 9 ? "0" : "") + (date.getMonth() + 1) + "-" +
         (date.getDate() < 10 ? "0" : "") + date.getDate() + " " +
+        (date.getHours() < 10 ? "0" : "") + date.getHours() + ":" +
+        (date.getMinutes() < 10 ? "0" : "") + date.getMinutes();
+}
+
+export function GetDateString(date) {
+    return "" + 
+        (date.getDate() < 10 ? "0" : "") + date.getDate() + "." +
+        (date.getMonth() < 9 ? "0" : "") + (date.getMonth() + 1) + "." +
+        date.getFullYear() + ", " + weekdayTranslaytor(date.getDay()) + " в " +
         (date.getHours() < 10 ? "0" : "") + date.getHours() + ":" +
         (date.getMinutes() < 10 ? "0" : "") + date.getMinutes();
 }
