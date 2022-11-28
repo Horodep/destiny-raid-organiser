@@ -17,7 +17,7 @@ export class CommandManager {
             .setDescription("[Issues tracker](https://github.com/Horodep/destiny-raid-organiser/issues)")
             .setColor(0x00AE86)
             .setThumbnail('https://images-ext-1.discordapp.net/external/veZptUu_KDKmwtUJX5QT3QxESYCaRp4_k0XUwEQxubo/https/i.imgur.com/e9DIB8e.png')
-            .setFooter({ text: 'Support: Horodep#2567', iconURL: 'https://cdn.discordapp.com/app-icons/1045276448270852268/af6a59b9de4d21015a67a708e5f85774.png' })
+            .setFooter({ text: 'Support: Horodep#2567', iconURL: 'https://cdn.discordapp.com/app-icons/1045276448270852268/ece36d47f3a0f2a6e15a82e57e0fbb3b.png' })
             .setTimestamp()
             .addFields(
                 this.commandList
