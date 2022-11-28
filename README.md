@@ -17,6 +17,9 @@ This is a discord bot created to manage raid appointments in the game Destiny 2.
 * `!перенос ДД.ММ ЧЧ:ММ`  
   перенос рейда, _должно быть ответом на сообщение рейда_  
   reschedule raid, _should be an answer to a raid message_
+* `!комментарий новый комментарий`  
+  изменить комментарий к рейду, _должно быть ответом на сообщение рейда_  
+  change raid description, _should be an answer to a raid message_
 * `!clean`  
   очистить канал от старых рейдов и лишних сообщений;  
   delete old and redundant messages from the raid channel;
