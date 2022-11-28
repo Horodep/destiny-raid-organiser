@@ -2,7 +2,6 @@ import schedule from 'node-schedule';
 import config from "../config.json" assert {type: "json"};
 import { client } from "../index.js"
 import { CatchShedulerError } from "./catcherror.js";
-import { ClearRaidList } from "../raid/raidMisc.js";
 import { GetRaidDataFromMessage } from "../raid/raidEmbed.js";
 import { InformRaidMembers } from "../raid/raidManagement.js";
 
@@ -20,7 +19,9 @@ export function InitSheduler() {
 						CatchShedulerError(e, client);
 				}
 			});
-		})
+		}).catch(e => {
+			console.error(`Error on sheduler raid messages fetch: ${e.name}: ${e.message}: ${id} (${raid_channel?.name})`);
+		});
 	})
 	
 }
