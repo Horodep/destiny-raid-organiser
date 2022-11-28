@@ -1,7 +1,7 @@
 import { Command } from "./command.js";
 import config from "../config.json" assert {type: "json"};
 
-import { ClearRaidList } from "../raid/raidMisc.js"
+import { ClearRaidList, raidChannels } from "../raid/raidMisc.js"
 import { CreateRaid } from "../raid/raidManagement.js"
 
 class RaidCommand extends Command {
@@ -30,5 +30,3 @@ export function GetRaidCommandsArray() {
 
     return array;
 }
-
-const raidChannels = config.guilds.map(guild => guild.raids);

@@ -1,8 +1,6 @@
 import { Command } from "./command.js";
-import config from "../config.json" assert {type: "json"};
-
 import { CommandManager } from "./commandManager.js"
-import { AsyncGetPlannedRaids } from "../raid/raidMisc.js"
+import { AsyncGetPlannedRaids, raidChannels } from "../raid/raidMisc.js"
 
 class MainCommand extends Command {
     Run(args, message) {
@@ -31,5 +29,3 @@ export function GetMainCommandsArray() {
 
     return array;
 }
-
-const raidChannels = config.guilds.map(guild => guild.raids);

@@ -1,12 +1,11 @@
 import schedule from 'node-schedule';
-import config from "../config.json" assert {type: "json"};
 import { client } from "../index.js"
 import { CatchShedulerError } from "./catcherror.js";
 import { GetRaidDataFromMessage } from "../raid/raidEmbed.js";
 import { InformRaidMembers } from "../raid/raidManagement.js";
+import { raidChannels } from "../raid/raidMisc.js"
 
 export function InitSheduler() {
-	const raidChannels = config.guilds.map(guild => guild.raids);
 	raidChannels.forEach(id => {
 		var raid_channel = GetChannel(id);
 		raid_channel?.messages.fetch({ limit: 100 }).then(messages => {

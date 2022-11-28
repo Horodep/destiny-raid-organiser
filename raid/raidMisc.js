@@ -1,8 +1,10 @@
 import config from "../config.json" assert {type: "json"};
 import { GetRaidDataFromMessage } from "./raidEmbed.js";
 
+export const raidChannels = config.guilds.map(guild => guild.raids).flat(1);
+
 export function ClearRaidList(message) {
-    if (!config.guilds.map(guild => guild.raids).includes(message.channel.id)) return;
+    if (!raidChannels.includes(message.channel.id)) return;
 
     var raid_channel = message.channel;
 
@@ -11,7 +13,7 @@ export function ClearRaidList(message) {
         console.log("now:", today);
         messages.sort((a, b) => a.id > b.id ? 1 : -1).forEach(msg => {
             if (msg.pinned) return;
-            
+
             if (!msg.author.bot) {
                 console.log("non bot message deleted");
                 msg.delete();
@@ -37,9 +39,13 @@ export function ClearRaidList(message) {
 export async function AsyncGetPlannedRaids(message, discordMention) {
     var discordId = discordMention.replace(/\D/g, '');
 
-    var raid_channel_id = config.guilds.find(g => g.id == message.guild.id).raids;
-    var raid_channel = message.client.channels.cache.get(raid_channel_id);
-    var messages = (await raid_channel.messages.fetch({ limit: 50 })).filter(m => m.embeds.length > 0);
+    var raid_channel_ids = config.guilds.find(g => g.id == message.guild.id).raids;
+    var raid_channels = raid_channel_ids.map(id => message.client.channels.cache.get(id));
+    var messages = await Promise.all(raid_channels.map(async (ch) => {
+        return await ch.messages.fetch({ limit: 50 });
+    }));
+    var messages = messages.map(i => Array.from(i.values())).flat(1)
+    var messages = messages.filter(msg => msg.client.user.id == msg.author.id)
     var raids = messages.map(m => GetRaidDataFromMessage(m)).sort((a, b) => a.date - b.date);
     var myraids = raids.filter(r => r?.members?.includes(discordId));
     message.channel.send(myraids.length == 0
