@@ -108,28 +108,6 @@ export function CancelRaid(data, raidMessage) {
     setTimeout(() => { raidMessage.delete(); }, 150);
 }
 
-export function ForcedAddRaidMember(message, args) {
-    if (args.length < 3) throw 'Указаны не все параметры';
-    message.channel.messages.fetch(args[1]).then(msg => {
-        AddRaidMember(msg, { id: args[2] });
-        var member = message.guild.members.cache.find(user => user.id == args[2]);
-        setTimeout(() => { message.delete(); }, 5000);
-        var data = GetRaidDataFromMessage(message);
-        SendPrivateMessageToMember(member, FormRaidInfoPrivateMessage(data, "Гильдмастер добавил вас в сбор активности."));
-    });
-}
-
-export function ForcedRemoveRaidMember(message, args) {
-    if (args.length < 3) throw 'Указаны не все параметры';
-    message.channel.messages.fetch(args[1]).then(msg => {
-        RemoveRaidMember(msg, { id: args[2] });
-        var member = message.guild.members.cache.find(user => user.id == args[2]);
-        setTimeout(() => { message.delete(); }, 5000);
-        var data = GetRaidDataFromMessage(message);
-        SendPrivateMessageToMember(member, FormRaidInfoPrivateMessage(data, "Гильдмастер отказался от вашего участия в активности, в которую вы записывались."));
-    });
-}
-
 export function InformRaidMembers(data, messageText, guild) {
     data.members.forEach(function (discord_id) {
         if (discord_id == "слот свободен") return;
