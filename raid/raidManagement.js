@@ -7,7 +7,7 @@ import config from "../config.json" assert {type: "json"};
 
 export function CreateRaid(message, args) {
     try {
-        if (CheckIfMemberBanned(message.member)) throw 'Вы не можете создавать рейды.';     
+        if (CheckIfMemberHasBanRole(message.member)) throw 'Вы не можете создавать рейды.';     
         var data = ParseCommandAndGetRaidData(args, message.member);
         data.AddRaidMember(message.member.id);
         var embed = CreateRaidMessage(data);
@@ -39,7 +39,7 @@ export function MoveRaid(message, args, raidMessage) {
 
 export function AddRaidMember(message, user, forced) {
     var discordMember = message.guild.members.cache.find(member => member.user.id == user.id);
-    if (CheckIfMemberBanned(discordMember)) return;
+    if (CheckIfMemberHasBanRole(discordMember)) return;
     
     var data = GetRaidDataFromMessage(message);
     if (!forced && data.left.find(m => m.id == user.id && m.isKicked)) return;
@@ -116,7 +116,7 @@ export function InformRaidMembers(data, messageText, guild) {
     });
 }
 
-export function CheckIfMemberBanned(discordMember){
+export function CheckIfMemberHasBanRole(discordMember){
     var banRole = config.guilds.find(g => g.id == discordMember.guild.id).ban;
     return (discordMember.roles.cache.find( role => role.id == banRole));
 }
