@@ -33,36 +33,12 @@ export function CreateRaidMessage(data, customTimestamp) {
     return { content: mention, embeds: [embed] };
 }
 
-function SelectThumbnail(raidName){
-    if (["пж", "lw", "последн", "желан", "ривен", "сердце", "last", "wish", "ласт", "виш"].some(str => raidName.toLowerCase().includes(str))) {
-        return "https://www.bungie.net/img/theme/destiny/icons/fireteams/fireteam_LastWish.png";
-    }else if (["сс", "gos", "сад", "спасен", "разум", "garden", "salvation"].some(str => raidName.toLowerCase().includes(str))) {
-        return "https://www.bungie.net/img/theme/destiny/icons/fireteams/fireteam_GardenOfSalvation.png";
-    }else if (["сгк", "dsc", "склеп", "crypt", "таникс"].some(str => raidName.toLowerCase().includes(str))) {
-        return "https://www.bungie.net/img/theme/destiny/icons/fireteams/fireteam_DeepStoneCrypt.png";
-    }else if (["вог", "хч", "vog", "хрустал", "чертог", "атеон", "vault", "glass"].some(str => raidName.toLowerCase().includes(str))) {
-        return "https://www.bungie.net/img/theme/destiny/icons/fireteams/fireteam_icons_vaultofglass.png";
-    }else if (["кп", "вод", "vod", "клятв", "послушник", "рулк", "рульк"].some(str => raidName.toLowerCase().includes(str))) {
-        return "https://www.bungie.net/img/theme/destiny/icons/fireteams/fireteam_icons_throneworldraid.png";
-    }else if (["гк", "kf", "кф", "гибел", "кинг", "корол", "king", "fall"].some(str => raidName.toLowerCase().includes(str))) {
-        return "https://www.bungie.net/img/theme/destiny/icons/fireteams/kingsfall.png";
-    }else if (["трон", "яма", "професи", "тиски", "алчн", "откро", "дуал", "proph", "pit", "throne", "grasp", "dual"].some(str => raidName.toLowerCase().includes(str))) {
-        return "https://www.bungie.net/img/theme/destiny/icons/fireteams/fireteamDungeon.png";
-    }else if (["конь", "вызов", "вечности", "doe", "dares", "eternity"].some(str => raidName.toLowerCase().includes(str))) {
-        return "https://www.bungie.net/img/theme/destiny/icons/fireteams/fireteam30thAnniversary.png";
-    }else if (["кетч"].some(str => raidName.toLowerCase().includes(str))) {
-        return "https://www.bungie.net/img/theme/destiny/icons/fireteams/fireteamSeason18.png";
-    }else if (["экспедиц", "сундук", "воител"].some(str => raidName.toLowerCase().includes(str))) {
-        return "https://www.bungie.net/img/theme/destiny/icons/fireteams/icon_expeditions.png";
-    }else if (["алтари", "altar"].some(str => raidName.toLowerCase().includes(str))) {
-        return "https://www.bungie.net/img/theme/destiny/icons/fireteams/fireteamAltarsOfSorrow.png";
-    }else if (["гм", "gm", "грандмастер", "grandmaster"].some(str => raidName.toLowerCase().includes(str))) {
-        return "https://www.bungie.net/common/destiny2_content/icons/DestinyActivityModeDefinition_234e7e18549d5eae2ddb012f2bcb203a.png";
-    }else if (["рейд", "raid"].some(str => raidName.toLowerCase().includes(str))) {
-        return "https://images-ext-2.discordapp.net/external/SfRL0Sj2a3O9vtAYpaC2OUG0r0vDipe2h8LeeZnFdf4/https/i.imgur.com/KBiRw8F.png";
-    }else{
-        return "https://www.bungie.net/img/theme/destiny/icons/fireteams/fireteamAnything.png";
-    }
+function SelectThumbnail(raidName) {
+    var list = activities.map(act => {
+        if (act.strings.some(str => raidName.toLowerCase().includes(str)))
+            return act.image;
+    })
+    return list.filter(i => i)[0];
 }
 
 export function GetRaidDataFromMessage(message) {
@@ -108,3 +84,34 @@ function CheckMessageIfRaid(message) {
     if(!regex.test(message.embeds[0]?.author?.name))
         throw 'Сообщение не распознано как рейд.';
 }
+
+const activities = [
+    {   strings: ["пж", "lw", "последн", "желан", "ривен", "сердце", "last", "wish", "ласт", "виш"],
+        image:   "https://www.bungie.net/img/theme/destiny/icons/fireteams/fireteam_LastWish.png" },
+    {   strings: ["сс", "gos", "сад", "спасен", "разум", "garden", "salvation"],
+        image:   "https://www.bungie.net/img/theme/destiny/icons/fireteams/fireteam_GardenOfSalvation.png" },
+    {   strings: ["сгк", "dsc", "склеп", "crypt", "таникс"],
+        image:   "https://www.bungie.net/img/theme/destiny/icons/fireteams/fireteam_DeepStoneCrypt.png" },
+    {   strings: ["вог", "хч", "vog", "хрустал", "чертог", "атеон", "vault", "glass"],
+        image:   "https://www.bungie.net/img/theme/destiny/icons/fireteams/fireteam_icons_vaultofglass.png" },
+    {   strings: ["кп", "вод", "vod", "клятв", "послушник", "рулк", "рульк"],
+        image:   "https://www.bungie.net/img/theme/destiny/icons/fireteams/fireteam_icons_throneworldraid.png" },
+    {   strings: ["гк", "kf", "кф", "гибел", "кинг", "корол", "king", "fall"],
+        image:   "https://www.bungie.net/img/theme/destiny/icons/fireteams/kingsfall.png" },
+    {   strings: ["трон", "яма", "професи", "тиски", "алчн", "откро", "дуал", "proph", "pit", "throne", "grasp", "dual"],
+        image:   "https://www.bungie.net/img/theme/destiny/icons/fireteams/fireteamDungeon.png" },
+    {   strings: ["кон", "вызов", "вечности", "doe", "dares", "eternity"],
+        image:   "https://www.bungie.net/img/theme/destiny/icons/fireteams/fireteam30thAnniversary.png" },
+    {   strings: ["кетч"],
+        image:   "https://www.bungie.net/img/theme/destiny/icons/fireteams/fireteamSeason18.png" },
+    {   strings: ["экспедиц", "сундук", "воител"],
+        image:   "https://www.bungie.net/img/theme/destiny/icons/fireteams/icon_expeditions.png" },
+    {   strings: ["алтари", "altar"],
+        image:   "https://www.bungie.net/img/theme/destiny/icons/fireteams/fireteamAltarsOfSorrow.png" },
+    {   strings: ["гм", "gm", "грандмастер", "grandmaster"],
+        image:   "https://www.bungie.net/common/destiny2_content/icons/DestinyActivityModeDefinition_234e7e18549d5eae2ddb012f2bcb203a.png" },
+    {   strings: ["рейд", "raid"],
+        image:   "https://images-ext-2.discordapp.net/external/SfRL0Sj2a3O9vtAYpaC2OUG0r0vDipe2h8LeeZnFdf4/https/i.imgur.com/KBiRw8F.png" },
+    {   strings: [""],
+        image:   "https://www.bungie.net/img/theme/destiny/icons/fireteams/fireteamAnything.png" },
+]
