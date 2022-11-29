@@ -19,7 +19,7 @@ export function CreateRaidMessage(data, customTimestamp) {
     var embed = new EmbedBuilder()
         .setAuthor({ name: data.header })
         .setColor(0x00AE86)
-        .setThumbnail('https://images-ext-2.discordapp.net/external/SfRL0Sj2a3O9vtAYpaC2OUG0r0vDipe2h8LeeZnFdf4/https/i.imgur.com/KBiRw8F.png')
+        .setThumbnail(SelectThumbnail(data.raidName))
         .addFields([
             { name: 'Идут:', value: field0, inline : true },
             { name: '\u200b', value: field1, inline : true },
@@ -31,6 +31,38 @@ export function CreateRaidMessage(data, customTimestamp) {
     if (left.length > 8) embed.addFields([ {name: "Отменили запись:", value: left }] )
 
     return { content: mention, embeds: [embed] };
+}
+
+function SelectThumbnail(raidName){
+    if (["пж", "lw", "последн", "желан", "ривен", "сердце", "last", "wish", "ласт", "виш"].some(str => raidName.toLowerCase().includes(str))) {
+        return "https://www.bungie.net/img/theme/destiny/icons/fireteams/fireteam_LastWish.png";
+    }else if (["сс", "gos", "сад", "спасен", "разум", "garden", "salvation"].some(str => raidName.toLowerCase().includes(str))) {
+        return "https://www.bungie.net/img/theme/destiny/icons/fireteams/fireteam_GardenOfSalvation.png";
+    }else if (["сгк", "dsc", "склеп", "crypt", "таникс"].some(str => raidName.toLowerCase().includes(str))) {
+        return "https://www.bungie.net/img/theme/destiny/icons/fireteams/fireteam_DeepStoneCrypt.png";
+    }else if (["вог", "хч", "vog", "хрустал", "чертог", "атеон", "vault", "glass"].some(str => raidName.toLowerCase().includes(str))) {
+        return "https://www.bungie.net/img/theme/destiny/icons/fireteams/fireteam_icons_vaultofglass.png";
+    }else if (["кп", "вод", "vod", "клятв", "послушник", "рулк", "рульк"].some(str => raidName.toLowerCase().includes(str))) {
+        return "https://www.bungie.net/img/theme/destiny/icons/fireteams/fireteam_icons_throneworldraid.png";
+    }else if (["гк", "kf", "кф", "гибел", "кинг", "корол", "king", "fall"].some(str => raidName.toLowerCase().includes(str))) {
+        return "https://www.bungie.net/img/theme/destiny/icons/fireteams/kingsfall.png";
+    }else if (["трон", "яма", "професи", "тиски", "алчн", "откро", "дуал", "proph", "pit", "throne", "grasp", "dual"].some(str => raidName.toLowerCase().includes(str))) {
+        return "https://www.bungie.net/img/theme/destiny/icons/fireteams/fireteamDungeon.png";
+    }else if (["конь", "вызов", "вечности", "doe", "dares", "eternity"].some(str => raidName.toLowerCase().includes(str))) {
+        return "https://www.bungie.net/img/theme/destiny/icons/fireteams/fireteam30thAnniversary.png";
+    }else if (["кетч"].some(str => raidName.toLowerCase().includes(str))) {
+        return "https://www.bungie.net/img/theme/destiny/icons/fireteams/fireteamSeason18.png";
+    }else if (["экспедиц", "сундук", "воител"].some(str => raidName.toLowerCase().includes(str))) {
+        return "https://www.bungie.net/img/theme/destiny/icons/fireteams/icon_expeditions.png";
+    }else if (["алтари", "altar"].some(str => raidName.toLowerCase().includes(str))) {
+        return "https://www.bungie.net/img/theme/destiny/icons/fireteams/fireteamAltarsOfSorrow.png";
+    }else if (["гм", "gm", "грандмастер", "grandmaster"].some(str => raidName.toLowerCase().includes(str))) {
+        return "https://www.bungie.net/common/destiny2_content/icons/DestinyActivityModeDefinition_234e7e18549d5eae2ddb012f2bcb203a.png";
+    }else if (["рейд", "raid"].some(str => raidName.toLowerCase().includes(str))) {
+        return "https://images-ext-2.discordapp.net/external/SfRL0Sj2a3O9vtAYpaC2OUG0r0vDipe2h8LeeZnFdf4/https/i.imgur.com/KBiRw8F.png";
+    }else{
+        return "https://www.bungie.net/img/theme/destiny/icons/fireteams/fireteamAnything.png";
+    }
 }
 
 export function GetRaidDataFromMessage(message) {
