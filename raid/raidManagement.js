@@ -52,16 +52,38 @@ export function ChangeRaidDescription(message, args, raidMessage) {
     message.delete();
 }
 
-export function AddRaidMember(message, user, forced) {
-    var discordMember = message.guild.members.cache.find(member => member.user.id == user.id);
-    if (CheckIfMemberHasBanRole(discordMember)) return;
-    
+export function AddRaidMember(message, user) {    
     var data = GetRaidDataFromMessage(message);
-    if (!forced && data.left.find(m => m.id == user.id && m.isKicked)) return;
+
+    if (data.left.find(m => m.id == user.id && m.isKicked)) return;
     if (data.members.length == data.numberOfPlaces) return;
-    data.AddRaidMember(user.id);
-    data.RemoveFromLeftField(user.id);
+    var discordMember = message.guild.members.cache.find(member => member.user.id == user.id);
+    if (!CheckMemberAndAddToRaid(discordMember, data)) return;
+
     message.edit(CreateRaidMessage(data));
+}
+
+export function InviteRaidMember(message, args, raidMessage) {
+    if (args.length < 2) throw 'Указано недостаточно данных.';
+
+    var data = GetRaidDataFromMessage(raidMessage);
+    let memberMatcher = id => message.guild.members.cache.find(member => member.user.id == id);
+    var members = message.mentions.users.map(user => memberMatcher(user.id));
+    members.forEach(member => {
+        if(CheckMemberAndAddToRaid(member, data))
+            SendPrivateMessageToMember(member, 
+                FormRaidInfoPrivateMessage(data, "Автор сбора добавил вас в активность."));
+    })
+
+    raidMessage.edit(CreateRaidMessage(data));
+    message.delete();
+}
+
+function CheckMemberAndAddToRaid(discordMember, data){
+    if (CheckIfMemberHasBanRole(discordMember)) return false;
+    if (!data.AddRaidMember(discordMember.id)) return false;
+    data.RemoveFromLeftField(discordMember.id);
+    return true;
 }
 
 export function RemoveRaidMember(message, user) {
@@ -70,19 +92,6 @@ export function RemoveRaidMember(message, user) {
     data.RemoveRaidMember(user.id);
     data.AddToLeftField(user.id);
     message.edit(CreateRaidMessage(data));
-}
-
-export function InviteRaidMember(message, args, raidMessage) {
-    if (args.length < 2) throw 'Указано недостаточно данных.';
-
-    var data = GetRaidDataFromMessage(raidMessage);
-    var discordId = args[1].replace(/\D/g, '');
-
-    AddRaidMember(raidMessage, { id: discordId }, true);
-
-    var discordMember = message.guild.members.cache.find(member => member.user.id == discordId);
-    SendPrivateMessageToMember(discordMember, FormRaidInfoPrivateMessage(data, "Автор сбора добавил вас в активность."));
-    message.delete();
 }
 
 export function KickRaidMemberByEmoji(message, user, reaction) {
