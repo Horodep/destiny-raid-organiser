@@ -1,12 +1,15 @@
 import { AddRaidMember, RemoveRaidMember, KickRaidMemberByEmoji, CancelRaidByEmoji } from "../raid/raidManagement.js";
 import { CatchErrorAndDeleteByTimeout } from "../core/catcherror.js";
+import { LoggingToChannel } from "../core/messaging.js";
 
 export async function AsyncMessageReactionAdd(reaction, user) {
 	try {
 		if (user.bot) return;
 		if (reaction.partial) await reaction.fetch();
 		if (reaction.client.user.id != reaction.message.author.id) return;
-		console.log(`${user.username} set reaction ${reaction._emoji.name}.`);
+		var line = `${user.username} set reaction ${reaction._emoji.name}.`;
+		console.log(line);
+		LoggingToChannel (reaction.message.guild, line);
 
 		if (reaction.message.embeds[0]?.footer?.text.startsWith("Собрал")) HandleRaids(reaction, user);
 	} catch (error) {
