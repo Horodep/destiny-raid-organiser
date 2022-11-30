@@ -29,7 +29,11 @@ export class RaidData {
     }
 
     get header() {
-        return this.dateString + " Активность: " + this.raidName;
+        return "Активность: " + this.raidName;
+    }
+
+    get descriptionField() {
+        return "**" + this.dateString + "**\n" + (this.description ?? "");
     }
 
     get footer() {
