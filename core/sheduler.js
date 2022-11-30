@@ -31,10 +31,15 @@ export function SheduleRaid(data, message) {
 	var inform_date = new Date(data.date.getTime() - 15 * 60 * 1000);
 	var delete_date = new Date(data.date.getTime() + 2 * 60 * 60 * 1000);
 
-	var text = "Рейд, в который вы записались, начнется через 15 минут!";
-	schedule.scheduleJob(message.id + "inform", inform_date, () => SaveRun(() => InformRaidMembers(data, text, message.guild)));
+	schedule.scheduleJob(message.id + "inform", inform_date, () => SaveRun(() => FetchRaidMembersAndInform(message)));
 	schedule.scheduleJob(message.id + "delete", delete_date, () => SaveRun(() => message.delete()));
 	console.log("События запланированы.");
+}
+
+function FetchRaidMembersAndInform(message) {
+	var data = GetRaidDataFromMessage(message);
+	var text = "Рейд, в который вы записались, начнется через 15 минут!";
+	InformRaidMembers(data, text, message.guild)
 }
 
 export function CancelSheduledRaid(message) {
