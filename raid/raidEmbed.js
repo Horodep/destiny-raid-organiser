@@ -34,11 +34,10 @@ export function CreateRaidMessage(data, customTimestamp) {
 }
 
 function SelectThumbnail(raidName) {
-    var list = activities.map(act => {
-        if (act.strings.some(str => raidName.toLowerCase().includes(str)))
-            return act.image;
-    })
-    return list.filter(i => i)[0];
+    let raidNameMatcher = string => raidName.toLowerCase().includes(string);
+    let activityPredicate = activity => activity.strings.some(raidNameMatcher);
+    let thumbnails = activities.filter(activityPredicate).map(activity => activity.image);
+    return thumbnails[0] ?? defaultImage;
 }
 
 export function GetRaidDataFromMessage(message) {
@@ -112,6 +111,5 @@ const activities = [
         image:   "https://www.bungie.net/common/destiny2_content/icons/DestinyActivityModeDefinition_234e7e18549d5eae2ddb012f2bcb203a.png" },
     {   strings: ["рейд", "raid"],
         image:   "https://images-ext-2.discordapp.net/external/SfRL0Sj2a3O9vtAYpaC2OUG0r0vDipe2h8LeeZnFdf4/https/i.imgur.com/KBiRw8F.png" },
-    {   strings: [""],
-        image:   "https://www.bungie.net/img/theme/destiny/icons/fireteams/fireteamAnything.png" },
 ]
+const defaultImage = "https://www.bungie.net/img/theme/destiny/icons/fireteams/fireteamAnything.png";
