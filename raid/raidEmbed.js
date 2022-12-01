@@ -85,7 +85,7 @@ function CheckMessageIfRaid(message) {
 }
 
 const activities = [
-    {   strings: ["пж", "lw", "последн", "желан", "ривен", "сердце", "last", "wish", "ласт", "виш"],
+    {   strings: ["пж", "lw", "последн", "желан", "ривен", "сердце", "last", "wish", "виш"],
         image:   "https://www.bungie.net/img/theme/destiny/icons/fireteams/fireteam_LastWish.png" },
     {   strings: ["сс", "gos", "сад", "спасен", "разум", "garden", "salvation"],
         image:   "https://www.bungie.net/img/theme/destiny/icons/fireteams/fireteam_GardenOfSalvation.png" },
