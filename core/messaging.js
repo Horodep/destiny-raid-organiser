@@ -45,7 +45,7 @@ export function SendPrivateMessageToMember(discordMember, text){
         discordMember.send(text);
         console.log("pm " + discordMember.displayName);
     } catch (e) {
-        console.error("pm " + discordMember.displayName + " WAS NOT SENT");
+        console.error("pm " + (discordMember?.displayName ?? discordMember) + " WAS NOT SENT");
     }
 }
 
