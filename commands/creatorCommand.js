@@ -1,5 +1,6 @@
 import { Command } from "./command.js";
 import { CatchErrorAndDeleteByTimeout } from "../core/catcherror.js";
+import { SafeDeleteMessageByTimeout } from "../core/safedeleting.js";
 import { InviteRaidMember, MoveRaid, ChangeRaidDescription, CancelRaidByMessage } from "../raid/raidManagement.js";
 import { GetRaidAuthorFromMessage } from "../raid/raidMisc.js";
 
@@ -16,8 +17,8 @@ class CreatorCommand extends Command {
 
             Command.prototype.SaveRun.call(this, args, message, raidMessage);
         }catch(e){
-            CatchErrorAndDeleteByTimeout(e, message.channel, 9500);
-            setTimeout(() => { message.delete(); }, 10000);
+            CatchErrorAndDeleteByTimeout(e, message.channel, 10000);
+            SafeDeleteMessageByTimeout(message, 10000);
         }
     }
 }

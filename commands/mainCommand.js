@@ -1,6 +1,7 @@
 import { Command } from "./command.js";
 import { CommandManager } from "./commandManager.js"
 import { AsyncGetPlannedRaids, raidChannels } from "../raid/raidMisc.js"
+import { SafeDeleteMessageByTimeout } from "../core/safedeleting.js";
 
 class MainCommand extends Command {
     Run(args, message) {
@@ -8,8 +9,8 @@ class MainCommand extends Command {
             Command.prototype.SaveRun.call(this, args, message);
         } else {
             message.channel.send("Данная команда не предназначена для канала рейдов.")
-                .then(msg => {setTimeout(() => { msg.delete(); }, 9500)});
-            setTimeout(() => { message.delete(); }, 10000);
+                .then(msg => SafeDeleteMessageByTimeout(msg, 10000));
+            SafeDeleteMessageByTimeout(message, 10000);
         }
     }
 }

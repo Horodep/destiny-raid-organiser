@@ -3,6 +3,7 @@ import { SendPrivateMessageToMember  } from "../core/messaging.js";
 import { CreateRaidMessage, GetRaidDataFromMessage } from "./raidEmbed.js";
 import { ParseCommandAndGetRaidData, ParseCommandAndGetDate, FormRaidInfoPrivateMessage } from "./raidLines.js";
 import { SheduleRaid, CancelSheduledRaid } from "../core/sheduler.js";
+import { SafeDeleteMessageByTimeout } from "../core/safedeleting.js";
 import config from "../config.json" assert {type: "json"};
 
 export function CreateRaid(message, args) {
@@ -129,7 +130,7 @@ export function CancelRaidByMessage(message, args, raidMessage) {
 export function CancelRaid(data, raidMessage) {
     InformRaidMembers(data, "Активность на которую вы записывались была отменена автором сбора:", raidMessage.guild);
     CancelSheduledRaid(raidMessage);
-    setTimeout(() => { raidMessage.delete(); }, 150);
+    SafeDeleteMessageByTimeout(raidMessage, 150);
 }
 
 export function InformRaidMembers(data, messageText, guild, oldData) {

@@ -4,6 +4,7 @@ import { CatchShedulerError } from "./catcherror.js";
 import { GetRaidDataFromMessage } from "../raid/raidEmbed.js";
 import { InformRaidMembers } from "../raid/raidManagement.js";
 import { raidChannels } from "../raid/raidMisc.js"
+import { SafeDeleteMessage } from "../core/safedeleting.js";
 
 export function InitSheduler() {
 	raidChannels.forEach(id => {
@@ -32,7 +33,7 @@ export function SheduleRaid(data, message) {
 	var delete_date = new Date(data.date.getTime() + 2 * 60 * 60 * 1000);
 
 	schedule.scheduleJob(message.id + "inform", inform_date, () => SaveRun(() => FetchRaidMembersAndInform(message)));
-	schedule.scheduleJob(message.id + "delete", delete_date, () => SaveRun(() => message.delete()));
+	schedule.scheduleJob(message.id + "delete", delete_date, () => SaveRun(() => SafeDeleteMessage(message)));
 	console.log("События запланированы.");
 }
 

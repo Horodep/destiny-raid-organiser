@@ -1,4 +1,5 @@
 import { CatchError, CatchErrorAndDeleteByTimeout } from "../core/catcherror.js";
+import { SafeDeleteMessageByTimeout } from "../core/safedeleting.js";
 
 export class Command {
     constructor(usage, status, apiDependency, description, callback) {
@@ -19,8 +20,8 @@ export class Command {
             else await this.callback(args, message, raidMessage);
         } catch (e) {
             if (raidMessage){
-                CatchErrorAndDeleteByTimeout(e, message.channel, 9500);
-                setTimeout(() => { message.delete(); }, 10000);
+                CatchErrorAndDeleteByTimeout(e, message.channel, 10000);
+                SafeDeleteMessageByTimeout(message, 10000)
             }else{
                 CatchError(e, message.channel);
             }
