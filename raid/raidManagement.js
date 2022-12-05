@@ -69,7 +69,9 @@ export function InviteRaidMember(message, args, raidMessage) {
 
     var data = GetRaidDataFromMessage(raidMessage);
     let memberMatcher = id => message.guild.members.cache.find(member => member.user.id == id);
-    var members = message.mentions.users.map(user => memberMatcher(user.id));
+    var members = message.mentions.users
+					.filter(user => user.id != message.client.user.id)
+					.map(user => memberMatcher(user.id));
     members.forEach(member => {
         if(CheckMemberAndAddToRaid(member, data))
             SendPrivateMessageToMember(member, 
