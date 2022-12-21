@@ -49,5 +49,6 @@ export function FormRaidInfoPrivateMessage(data, message, oldData) {
 }
 
 export function GetGlobalMentionForGuild(guildId){
-    return guildId ? "<@&" + config.guilds.find(g => g.id == guildId).mention + ">" : "";
+    var mention = config.guilds.find(g => g.id == guildId).mention;
+    return mention ? "<@&" + mention + ">" : "@here";
 }
