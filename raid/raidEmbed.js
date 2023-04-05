@@ -97,6 +97,8 @@ const activities = [
         image:   "https://www.bungie.net/img/theme/destiny/icons/fireteams/fireteam_icons_throneworldraid.png" },
     {   strings: ["гк", "kf", "кф", "гибел", "кинг", "корол", "king", "fall"],
         image:   "https://www.bungie.net/img/theme/destiny/icons/fireteams/kingsfall.png" },
+    {   strings: ["ик", "ron", "источник", "кошмар", "root", "nightmare", "назарек", "бабочка"],
+        image:   "https://cdn.discordapp.com/attachments/799584345156616195/1093174841303117944/ron.png" },
     {   strings: ["трон", "throne"],
         image:   "https://www.bungie.net/common/destiny2_content/icons/43541be45952e7eec59b7b57a0bf15a3.png" },
     {   strings: ["яма", "pit"],
