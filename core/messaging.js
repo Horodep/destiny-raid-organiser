@@ -39,6 +39,11 @@ export function SendPrivateMessage(guild, args){
     SendPrivateMessageToMember(member, text);
 }
 
+export async function SendPrivateMessageToMemberById(userId, guild, text){
+    var discordMember = await guild.members.fetch(userId);
+    SendPrivateMessageToMember(discordMember, text);
+}
+
 export function SendPrivateMessageToMember(discordMember, text){
     try {
         if (discordMember.user.bot) return;

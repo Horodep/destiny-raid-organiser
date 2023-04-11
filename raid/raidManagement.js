@@ -1,5 +1,5 @@
 import { CatchError, CatchErrorAndDeleteByTimeout, CatchRaidError } from "../core/catcherror.js";
-import { SendPrivateMessageToMember  } from "../core/messaging.js";
+import { SendPrivateMessageToMember, SendPrivateMessageToMemberById } from "../core/messaging.js";
 import { CreateRaidMessage, GetRaidDataFromMessage } from "./raidEmbed.js";
 import { ParseCommandAndGetRaidData, ParseCommandAndGetDate, FormRaidInfoPrivateMessage } from "./raidLines.js";
 import { SheduleRaid, CancelSheduledRaid } from "../core/sheduler.js";
@@ -108,8 +108,8 @@ export function KickRaidMemberByEmoji(message, user, reaction) {
     data.AddToLeftField(userId, true);
 
     if (userId?.length > 0) {
-        var member = message.guild.members.cache.find(user => user.id == userId);
-        SendPrivateMessageToMember(member, FormRaidInfoPrivateMessage(data, "Автор сбора отказался от вашего участия в активности, в которую вы записывались."));
+        SendPrivateMessageToMemberById(userId, message.guild, 
+            FormRaidInfoPrivateMessage(data, "Автор сбора отказался от вашего участия в активности, в которую вы записывались."));
     }
     message.edit(CreateRaidMessage(data));
 }
@@ -138,8 +138,8 @@ export function CancelRaid(data, raidMessage) {
 export function InformRaidMembers(data, messageText, guild, oldData) {
     data.members.forEach(function (discord_id) {
         if (discord_id == "слот свободен") return;
-        var member = guild.members.cache.find(user => user.id == discord_id);
-        SendPrivateMessageToMember(member, FormRaidInfoPrivateMessage(data, messageText, oldData));
+        SendPrivateMessageToMemberById(discord_id, guild, 
+            FormRaidInfoPrivateMessage(data, messageText, oldData));
     });
 }
 
