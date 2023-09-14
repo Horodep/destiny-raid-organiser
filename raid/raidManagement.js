@@ -11,6 +11,8 @@ export function CreateRaid(message, args) {
         if (CheckIfMemberHasBanRole(message.member)) throw 'Вы не можете создавать рейды.';     
         var data = ParseCommandAndGetRaidData(args, message.member);
         data.AddRaidMember(message.member.id);
+        FetchMentionsAndInvite(data, message);
+
         var embed = CreateRaidMessage(data);
         
         message.channel.send(embed).then((msg) => {
@@ -68,6 +70,14 @@ export function InviteRaidMember(message, args, raidMessage) {
     if (args.length < 2) throw 'Указано недостаточно данных.';
 
     var data = GetRaidDataFromMessage(raidMessage);
+
+    FetchMentionsAndInvite(data, message);
+
+    raidMessage.edit(CreateRaidMessage(data));
+    message.delete();
+}
+
+function FetchMentionsAndInvite(data, message) {
     let memberMatcher = id => message.guild.members.cache.find(member => member.user.id == id);
     var members = message.mentions.users
 					.filter(user => user.id != message.client.user.id)
@@ -76,11 +86,9 @@ export function InviteRaidMember(message, args, raidMessage) {
         if(CheckMemberAndAddToRaid(member, data))
             SendPrivateMessageToMember(member, 
                 FormRaidInfoPrivateMessage(data, "Автор сбора добавил вас в активность."));
-    })
-
-    raidMessage.edit(CreateRaidMessage(data));
-    message.delete();
+            })
 }
+
 
 function CheckMemberAndAddToRaid(discordMember, data){
     if (CheckIfMemberHasBanRole(discordMember)) return false;
