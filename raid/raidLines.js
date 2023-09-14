@@ -1,22 +1,31 @@
 import { RaidData, GetDateString } from "./raidData.js";
 import config from "../config.json" assert {type: "json"};
 
-export function ParseCommandAndGetRaidData(args, member) {
+export function ParseCommandAndGetRaidData(args, message) {
     //0    1     2     3   4           5
     //сбор 22.09 18:00 [3] {@tag @tag} кс, рандомный комент
     if (args.length < 4) throw 'Указано недостаточно данных.';
+
+    var member = message.member;
 
     var date = ParseCommandAndGetDate(args);
 
     var commandRaidInfo = args.filter((_, i) => i > 2).join(" ");
     
-    var raidNameArr = commandRaidInfo.match(/(\[\d{1,2}\])? ?(\{.+\})? ?((.|\n)+)/);
+    var raidNameArr = commandRaidInfo.match(/(\[\d{1,2}\])? ?((.|\n)+)/);
     if (raidNameArr == null) throw 'Активность не определена.';
     if (raidNameArr.length < 2) throw 'Активность не определена.';
     var raidInfo = raidNameArr[raidNameArr.length - 2];
     var raidName = raidInfo.indexOf(',') == -1 ? raidInfo : raidInfo.substr(0, raidInfo.indexOf(','));
-    var description = (raidInfo.indexOf(',') == -1 ? null : raidInfo.substr(raidInfo.indexOf(',') + 1));
     if (raidName == '') throw 'Активность не определена.';
+
+    var description = (raidInfo.indexOf(',') == -1 ? null : raidInfo.substr(raidInfo.indexOf(',') + 1));
+    if (description != null){
+        message.mentions.users.forEach(mention => {
+            description = description.replaceAll(mention, "");
+        });
+        description = description.replaceAll(/\s{2,}/g, ' ');
+    }
 
     var numberOfPlaces = commandRaidInfo.match(/^\[\d+\]/);
     var numberOfPlaces = (numberOfPlaces == null) ? 6 : numberOfPlaces[0].match(/\d+/)[0];

@@ -8,12 +8,9 @@ This is a discord bot created to manage raid appointments in the game Destiny 2.
 * `!сбор ДД.ММ ЧЧ:ММ [N] название активности, комментарии`  
   создание сбора на активность на N человек;  
   create an appointment for N people;
-* `!сбор ДД.ММ ЧЧ:ММ {@DiscordTag @DiscordTag} название активности, комментарии`  
-  создание сбора на активность на 6 человек с бронью стражей;  
-  create an appointment for 6 people with booking;
-* `!сбор ДД.ММ ЧЧ:ММ [N] {@DiscordTag @DiscordTag} название активности, комментарии`  
-  создание сбора на активность на N человек с бронью стражей;  
-  create an appointment for N people with booking;
+* `!сбор ДД.ММ ЧЧ:ММ название активности, комментарии @DiscordTag @DiscordTag`  
+  создание сбора на активность с бронью стражей;  
+  create an appointment with booking;
 * `!бронь @DiscordTag @DiscordTag`  
   забронировать место за стражем, _должно быть ответом на сообщение рейда_  
   book a place for a guardian, _should be an answer to a raid message_

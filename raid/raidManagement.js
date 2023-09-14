@@ -9,7 +9,7 @@ import config from "../config.json" assert {type: "json"};
 export function CreateRaid(message, args) {
     try {
         if (CheckIfMemberHasBanRole(message.member)) throw 'Вы не можете создавать рейды.';     
-        var data = ParseCommandAndGetRaidData(args, message.member);
+        var data = ParseCommandAndGetRaidData(args, message);
         data.AddRaidMember(message.member.id);
         FetchMentionsAndInvite(data, message);
 
