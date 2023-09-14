@@ -10,9 +10,10 @@ export function ParseCommandAndGetRaidData(args, member) {
 
     var commandRaidInfo = args.filter((_, i) => i > 2).join(" ");
     
-    var raidNameArr = commandRaidInfo.match(/\[\d{1,2}\]\s+\{.+\}\s+((.|\n)+)/);
+    var raidNameArr = commandRaidInfo.match(/(\[\d{1,2}\])? ?(\{.+\})? ?((.|\n)+)/);
+    if (raidNameArr == null) throw 'Активность не определена.';
     if (raidNameArr.length < 2) throw 'Активность не определена.';
-    var raidInfo = raidNameArr[1];
+    var raidInfo = raidNameArr[raidNameArr.length - 2];
     var raidName = raidInfo.indexOf(',') == -1 ? raidInfo : raidInfo.substr(0, raidInfo.indexOf(','));
     var description = (raidInfo.indexOf(',') == -1 ? null : raidInfo.substr(raidInfo.indexOf(',') + 1));
     if (raidName == '') throw 'Активность не определена.';
@@ -34,9 +35,9 @@ export function ParseCommandAndGetDate(args) {
     return date;
 }
 
-> Активность: **${data.raidFullName.replace('\n', '**\n> **')}**
+export function FormRaidInfoPrivateMessage(data, message, oldData) {
     var line = `${message}
-> Активность: **${data.raidFullName}**
+> Активность: **${data.raidFullName.replace('\n', '**\n> **')}**
 > Дата проведения: **${data.dateString}**
 > Автор сбора: **${data.author.displayName}**`;
     switch (typeof (oldData)){
