@@ -1,4 +1,4 @@
-import { AddRaidMember, RemoveRaidMember, KickRaidMemberByEmoji, CancelRaidByEmoji } from "../raid/raidManagement.js";
+import { AddRaidMember, RemoveRaidMember, RefreshRaidUi, PmRaidInfo, KickRaidMemberByEmoji, CancelRaidByEmoji } from "../raid/raidManagement.js";
 import { CatchErrorAndDeleteByTimeout } from "../core/catcherror.js";
 import { LoggingToChannel } from "../core/messaging.js";
 
@@ -26,6 +26,14 @@ function HandleRaids(reaction, user) {
 			break;
 		case "no":
 			RemoveRaidMember(reaction.message, user, true);
+			reaction.users.remove(user);
+			break;
+		case "refresh":
+			RefreshRaidUi(reaction.message);
+			reaction.users.remove(user);
+			break;
+		case "ℹ️":
+			PmRaidInfo(reaction.message, user);
 			reaction.users.remove(user);
 			break;
 		case "🚫":

@@ -1,7 +1,7 @@
 import { CatchError, CatchErrorAndDeleteByTimeout, CatchRaidError } from "../core/catcherror.js";
 import { SendPrivateMessageToMember, SendPrivateMessageToMemberById } from "../core/messaging.js";
 import { CreateRaidMessage, GetRaidDataFromMessage } from "./raidEmbed.js";
-import { ParseCommandAndGetRaidData, ParseCommandAndGetDate, FormRaidInfoPrivateMessage } from "./raidLines.js";
+import { ParseCommandAndGetRaidData, ParseCommandAndGetDate, FormRaidInfoPrivateMessage, FormFullRaidInfoPrivateMessage } from "./raidLines.js";
 import { SheduleRaid, CancelSheduledRaid } from "../core/sheduler.js";
 import { SafeDeleteMessageByTimeout } from "../core/safedeleting.js";
 import config from "../config.json" assert {type: "json"};
@@ -97,6 +97,11 @@ export function RemoveRaidMember(message, user) {
     message.edit(CreateRaidMessage(data));
 }
 
+export function RefreshRaidUi(message) {
+    var data = GetRaidDataFromMessage(message);
+    message.edit(CreateRaidMessage(data));
+}
+
 export function KickRaidMemberByEmoji(message, user, reaction) {
     var data = GetRaidDataFromMessage(message);
     if (data.author.id != user.id) {
@@ -146,4 +151,10 @@ export function InformRaidMembers(data, messageText, guild, oldData) {
 export function CheckIfMemberHasBanRole(discordMember){
     var banRole = config.guilds.find(g => g.id == discordMember.guild.id).ban;
     return (discordMember.roles.cache.find( role => role.id == banRole));
+}
+
+export async function PmRaidInfo(message, user) {
+    var data = GetRaidDataFromMessage(message);
+    SendPrivateMessageToMemberById(user.id, message.guild, 
+        await FormFullRaidInfoPrivateMessage(data, message.guild));
 }

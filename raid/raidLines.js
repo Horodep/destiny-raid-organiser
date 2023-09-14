@@ -48,6 +48,19 @@ export function FormRaidInfoPrivateMessage(data, message, oldData) {
     return line;
 }
 
+export async function FormFullRaidInfoPrivateMessage(data, guild) {
+    var line = FormRaidInfoPrivateMessage(data, "Информация о рейде:");
+    line += `\n> Участники: `;
+    for (var i=0; i<data.members.length; i++)
+    {
+        if (data.members[i] != "слот свободен"){
+            var discordMember = await guild.members.fetch(data.members[i]);
+            line += `\n> • <@${data.members[i]}> (${discordMember.displayName})`;
+        }       
+    }
+    return line;
+}
+
 export function GetGlobalMentionForGuild(guildId){
     var mention = config.guilds.find(g => g.id == guildId).mention;
     return mention ? "<@&" + mention + ">" : "@here";
