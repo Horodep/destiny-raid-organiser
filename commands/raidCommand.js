@@ -27,6 +27,7 @@ export function GetRaidCommandsArray() {
         CreateRaid(message, args);
     }));
     array.push(new RaidCommand("!сбор ДД.ММ ЧЧ:ММ [N] название активности, комментарии", on, false, "создание сбора на активность на N человек;", null));
+    array.push(new RaidCommand("!сбор ДД.ММ ЧЧ:ММ название активности, комментарии @UserTag @UserTag", on, false, "создание сбора на активность c бронью места за стражем;", null));
 
     return array;
 }

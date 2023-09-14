@@ -30,7 +30,7 @@ export const client = new Client(
 client.login(config.credentials.discordApiKey);
 
 client.on(Events.ClientReady, () => {
-	client.user.setActivity("Support: Horodep#2567");
+	client.user.setActivity("Support: horodep");
 	config.guilds.forEach(guild_data => {
 		var guild = client.guilds.cache.get(guild_data.id);
 		guild?.members.fetch();

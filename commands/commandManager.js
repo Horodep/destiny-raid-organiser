@@ -2,6 +2,7 @@ import { EmbedBuilder } from "discord.js";
 import { GetCreatorCommandsArray } from "./creatorCommand.js";
 import { GetMainCommandsArray } from "./mainCommand.js";
 import { GetRaidCommandsArray } from "./raidCommand.js";
+import nodePackage from "../package.json" assert {type: "json"};
 
 export class CommandManager {
     static commandList = [];
@@ -13,11 +14,12 @@ export class CommandManager {
 
     static GetHelp() {
         var embed = new EmbedBuilder()
-            .setAuthor({ name: "Список доступных команд" })
+            .setAuthor({ name: nodePackage.name })
+            .setAuthor({ name: "Список доступных команд :: Destiny Raid Organiser v" + nodePackage.version })
             .setDescription("[Issues tracker](https://github.com/Horodep/destiny-raid-organiser/issues)")
             .setColor(0x00AE86)
             .setThumbnail('https://images-ext-1.discordapp.net/external/veZptUu_KDKmwtUJX5QT3QxESYCaRp4_k0XUwEQxubo/https/i.imgur.com/e9DIB8e.png')
-            .setFooter({ text: 'Support: Horodep#2567', iconURL: 'https://cdn.discordapp.com/app-icons/1045276448270852268/ece36d47f3a0f2a6e15a82e57e0fbb3b.png' })
+            .setFooter({ text: 'Support: horodep', iconURL: 'https://cdn.discordapp.com/app-icons/1045276448270852268/ece36d47f3a0f2a6e15a82e57e0fbb3b.png' })
             .setTimestamp()
             .addFields(
                 this.commandList
