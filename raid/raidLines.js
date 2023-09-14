@@ -34,7 +34,7 @@ export function ParseCommandAndGetDate(args) {
     return date;
 }
 
-export function FormRaidInfoPrivateMessage(data, message, oldData) {
+> Активность: **${data.raidFullName.replace('\n', '**\n> **')}**
     var line = `${message}
 > Активность: **${data.raidFullName}**
 > Дата проведения: **${data.dateString}**

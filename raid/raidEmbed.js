@@ -61,7 +61,7 @@ export function GetRaidDataFromMessage(message) {
 
     return new RaidData(
         embed.title.split('Активность: ')[1],
-        embed.description.split('\n')[1] ?? null,
+        embed.description.split('\n').slice(1).join('\n') ?? null,
         date,
         linesArray.length,
         linesArray.filter(line => line != "слот свободен"),
