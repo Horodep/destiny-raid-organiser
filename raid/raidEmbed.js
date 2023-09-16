@@ -121,6 +121,8 @@ const activities = [
         image:   "https://www.bungie.net/img/theme/destiny/icons/fireteams/icon_expeditions.png" },
     {   strings: ["алтари", "altar"],
         image:   "https://www.bungie.net/img/theme/destiny/icons/fireteams/fireteamAltarsOfSorrow.png" },
+    {   strings: ["рыба", "fish"],
+        image:   "https://cdn.discordapp.com/attachments/799584345156616195/1152593668067295332/45181123a0ff6595bbf191e208370036.png" },
     {   strings: ["гм", "gm", "грандмастер", "grandmaster"],
         image:   "https://www.bungie.net/common/destiny2_content/icons/DestinyActivityModeDefinition_234e7e18549d5eae2ddb012f2bcb203a.png" },
     {   strings: ["рейд", "raid"],
