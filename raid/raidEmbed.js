@@ -43,7 +43,7 @@ function SelectThumbnail(raidName) {
 export function GetRaidDataFromMessage(message) {
     CheckMessageIfRaid(message);
     var embed = message.embeds[0];
-    var dateString = embed.description.split('\n')[0].replace(/,.*? в /g, " ").replaceAll("**", "");
+    var dateString = embed.description.split('\n')[0].split('\u200B')[0].replace(/,.*? в /g, " ").replaceAll("**", "");
     var arr = dateString.split(/[ .:]/g);
     var date = new Date(arr[2], arr[1] - 1, arr[0], arr[3], arr[4]);
     var linesArray = (embed.fields[0].value + "\n" + embed.fields[1].value).replace(/[<@>]/g, '').split('\n');

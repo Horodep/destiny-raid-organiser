@@ -33,7 +33,7 @@ export class RaidData {
     }
 
     get descriptionField() {
-        return "**" + this.dateString + "**\n" + (this.description ?? "");
+        return "**" + this.dateString + "**" + '\u200B' + " " + this.dateRelative + "\n" + (this.description ?? "");
     }
 
     get footer() {
@@ -51,6 +51,10 @@ export class RaidData {
 
     get dateWithTimezone() {
         return "<t:" + this.date.getTime()/1000 + ">";
+    }
+
+    get dateRelative() {
+        return "<t:" + this.date.getTime()/1000 + ":R>";
     }
 
     FormFields() {
