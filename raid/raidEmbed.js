@@ -111,6 +111,8 @@ const activities = [
         image:   "https://www.bungie.net/common/destiny2_content/icons/dfc73de54b0ed12b55fdf09e1b3b9726.png" },
     {   strings: ["шпиль", "хранител", "spire", "watcher"],
         image:   "https://www.bungie.net/common/destiny2_content/icons/32a269aa0b3cbfcc97c6e48ca7229e23.png" },
+    {   strings: ["руин", "полк", "warlord", "ruin"],
+        image:   "https://cdn.discordapp.com/attachments/799584345156616195/1196386340976197672/warlord_ruin.png" },
     {   strings: ["кон", "вызов", "вечности", "doe", "dares", "eternity"],
         image:   "https://www.bungie.net/img/theme/destiny/icons/fireteams/fireteam30thAnniversary.png" },
     {   strings: ["сс", "gos", "сад", "спасен", "разум", "garden", "salvation"],
