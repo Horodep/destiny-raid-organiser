@@ -67,8 +67,8 @@ export function GetRaidDataFromMessage(message) {
         linesArray.filter(line => line != "слот свободен"),
         left,
         {
-            displayName: embed.footer.text.split(' | ')[0].replace("Собрал: ", ""),
-            id: embed.footer.text.split(' | ')[1].replace("id: ", "")
+            displayName: embed.footer.text.split(' | ').slice(0, -1).join(' | ').replace("Собрал: ", ""),
+            id: embed.footer.text.split(' | ').slice(-1).join(' | ').replace("id: ", "")
         },
         embed.footer.iconURL,
         message.guild.id
