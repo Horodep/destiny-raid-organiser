@@ -108,6 +108,12 @@ export function RemoveRaidMember(message, user) {
 export function RefreshRaidUi(message) {
     var data = GetRaidDataFromMessage(message);
     message.edit(CreateRaidMessage(data));
+
+    if (message.reactions.cache.find(r => r.emoji.name == "yes") == undefined)
+        message.react(":yes:1045279820910702614");
+
+    if (message.reactions.cache.find(r => r.emoji.name == "no") == undefined)
+        message.react(":no:1045279822621986876");
 }
 
 export function KickRaidMemberByEmoji(message, user, reaction) {
