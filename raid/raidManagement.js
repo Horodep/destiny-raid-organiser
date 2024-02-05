@@ -105,9 +105,11 @@ export function RemoveRaidMember(message, user) {
     message.edit(CreateRaidMessage(data));
 }
 
-export function RefreshRaidUi(message) {
+export async function RefreshRaidUi(message) {
     var data = GetRaidDataFromMessage(message);
     message.edit(CreateRaidMessage(data));
+
+    await message.fetch();
 
     if (message.reactions.cache.find(r => r.emoji.name == "yes") == undefined)
         message.react(":yes:1045279820910702614");
