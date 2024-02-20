@@ -45,13 +45,13 @@ export async function SendPrivateMessageToMemberById(userId, guild, text){
 }
 
 export function SendPrivateMessageToMember(discordMember, text){
-    try {
-        if (discordMember.user.bot) return;
-        discordMember.send(text);
-        console.log("pm " + discordMember.displayName);
-    } catch (e) {
-        console.error("pm " + (discordMember?.displayName ?? discordMember) + " WAS NOT SENT");
-    }
+    if (discordMember.user.bot) return;
+    console.log("pm " + discordMember.displayName);
+    discordMember.send(text).catch(
+        () => {
+            console.error("pm " + (discordMember?.displayName ?? discordMember) + " WAS NOT SENT");
+        }
+    );
 }
 
 export function LoggingToChannel (guild, ...args) {
