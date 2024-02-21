@@ -1,6 +1,6 @@
 {
   "name": "destiny-raid-organiser",
-  "version": "0.9.27",
+  "version": "0.9.28",
   "description": "Discord bot for Destiny 2 raid management",
   "main": "index.js",
   "type": "module",
