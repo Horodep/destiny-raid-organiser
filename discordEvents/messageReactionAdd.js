@@ -32,6 +32,7 @@ function HandleRaids(reaction, user) {
 			RefreshRaidUi(reaction.message);
 			reaction.users.remove(user);
 			break;
+		case "info":
 		case "ℹ️":
 			PmRaidInfo(reaction.message, user);
 			reaction.users.remove(user);

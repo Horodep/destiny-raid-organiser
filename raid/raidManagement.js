@@ -18,6 +18,7 @@ export function CreateRaid(message, args) {
         message.channel.send(embed).then((msg) => {
             msg.react(":yes:1045279820910702614");
             msg.react(":no:1045279822621986876");
+            msg.react(":info:1209800527152545812");
             SheduleRaid(data, msg);
         });
     } catch (e) {
@@ -116,6 +117,9 @@ export async function RefreshRaidUi(message) {
 
     if (message.reactions.cache.find(r => r.emoji.name == "no") == undefined)
         message.react(":no:1045279822621986876");
+
+    if (message.reactions.cache.find(r => r.emoji.name == "info") == undefined)
+        message.react(":info:1209800527152545812");
 }
 
 export function KickRaidMemberByEmoji(message, user, reaction) {
