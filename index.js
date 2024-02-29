@@ -14,6 +14,10 @@ import { LoadAndDeployCommands } from "./commands/slashCommands.js"
 
 export const client = new Client(
 	{ 
+		allowedMentions: { 
+			parse: ['users', 'roles', 'everyone'], 
+			repliedUser: true 
+		},
 		partials: [
 			Partials.User,
 			Partials.Message, 
