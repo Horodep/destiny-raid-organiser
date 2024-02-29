@@ -45,7 +45,7 @@ export class RaidData {
     }
 
     get roleTag() {
-        var regexpRoleTag = /<@.\d+>/g;
+        var regexpRoleTag = /<@&\d+>/g;
         return (this.description == null ? null : this.description.match(regexpRoleTag));
     }
 

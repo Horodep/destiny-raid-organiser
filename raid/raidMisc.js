@@ -16,7 +16,7 @@ export function ClearRaidList(message) {
 
             if (!msg.author.bot) {
                 console.log("non bot message deleted");
-                msg.delete();
+                msg.delete().catch(() => null);
                 return;
             }
 
@@ -25,11 +25,11 @@ export function ClearRaidList(message) {
                 console.log(data.date, data.header);
                 if (data.date < today) {
                     console.log("raid deleted");
-                    msg.delete();
+                    msg.delete().catch(() => null);
                 }
             }catch{
                 console.log("bot non raid message deleted");
-                msg.delete();
+                msg.delete().catch(() => null);
             }
 
         });

@@ -2,7 +2,7 @@ import { Command } from "./command.js";
 import config from "../config.json" assert {type: "json"};
 
 import { ClearRaidList, raidChannels } from "../raid/raidMisc.js"
-import { CreateRaid } from "../raid/raidManagement.js"
+import { CreateRaidFromMessage } from "../raid/raidManagement.js"
 
 class RaidCommand extends Command {
     Run(args, message) {
@@ -24,7 +24,7 @@ export function GetRaidCommandsArray() {
         await ClearRaidList(message);
     }));
     array.push(new RaidCommand("!сбор ДД.ММ ЧЧ:ММ название активности, комментарии", on, false, "создание сбора на активность на 6 человек;", async function (args, message) {
-        CreateRaid(message, args);
+        CreateRaidFromMessage(message, args);
     }));
     array.push(new RaidCommand("!сбор ДД.ММ ЧЧ:ММ [N] название активности, комментарии", on, false, "создание сбора на активность на N человек;", null));
     array.push(new RaidCommand("!сбор ДД.ММ ЧЧ:ММ название активности, комментарии @UserTag @UserTag", on, false, "создание сбора на активность c бронью места за стражем;", null));

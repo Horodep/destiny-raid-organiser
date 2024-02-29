@@ -7,7 +7,7 @@ export async function AsyncMessageReactionAdd(reaction, user) {
 		if (user.bot) return;
 		if (reaction.partial) await reaction.fetch();
 		if (reaction.client.user.id != reaction.message.author.id) return;
-		var line = `${user.username} set reaction ${reaction._emoji.name}.`;
+		var line = `${user.username} set reaction ${reaction._emoji.name}`;
 		console.log(line);
 		LoggingToChannel (reaction.message.guild, line);
 

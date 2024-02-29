@@ -6,7 +6,7 @@ import { SheduleRaid, CancelSheduledRaid } from "../core/sheduler.js";
 import { SafeDeleteMessageByTimeout } from "../core/safedeleting.js";
 import config from "../config.json" assert {type: "json"};
 
-export function CreateRaid(message, args) {
+export function CreateRaidFromMessage(message, args) {
     try {
         if (CheckIfMemberHasBanRole(message.member)) throw 'Вы не можете создавать рейды.';     
         var data = ParseCommandAndGetRaidData(args, message);

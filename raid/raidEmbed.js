@@ -10,8 +10,8 @@ export function CreateRaidMessage(data, customTimestamp) {
         throw 'Длина комментария сбора не может быть больше 2048 символов.';
     else if (data.numberOfPlaces == 1)
         throw 'Активность можно собрать не менее, чем на двоих участников.';
-    else if (data.numberOfPlaces > 12)
-        throw 'Максимальное количество участников — 12.';
+    else if (data.numberOfPlaces > 18)
+        throw 'Максимальное количество участников — 18.';
 
     var mention = data.roleTag ? data.roleTag.join(' ') : GetGlobalMentionForGuild(data.guildId);
 
@@ -30,7 +30,7 @@ export function CreateRaidMessage(data, customTimestamp) {
     if (customTimestamp != null) embed.setTimestamp(customTimestamp);
     if (left.length > 8) embed.addFields([ {name: "Отменили запись:", value: left }] )
 
-    return { content: mention, embeds: [embed] };
+    return { content: mention, embeds: [embed], fetchReply: true };
 }
 
 function SelectThumbnail(raidName) {
