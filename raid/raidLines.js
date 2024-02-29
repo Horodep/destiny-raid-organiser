@@ -1,7 +1,7 @@
 import { RaidData, GetDateString } from "./raidData.js";
 import config from "../config.json" assert {type: "json"};
 
-export function ParseCommandAndGetRaidData(args, message) {
+export function ParseMessageCommandAndGetRaidData(args, message) {
     //0    1     2     3   4           5
     //сбор 22.09 18:00 [3] {@tag @tag} кс, рандомный комент
     if (args.length < 4) throw 'Указано недостаточно данных.';
@@ -31,6 +31,36 @@ export function ParseCommandAndGetRaidData(args, message) {
     var numberOfPlaces = (numberOfPlaces == null) ? 6 : numberOfPlaces[0].match(/\d+/)[0];
 
     return new RaidData(raidName, description, date, numberOfPlaces, [], [], member, member.user.avatarURL(), member.guild.id);
+}
+
+export function ParseSlashCommandAndGetRaidData(interaction, numberOfPlaces) {
+    var member = interaction.member;
+
+    var today = new Date();
+    var day = "";
+    switch (interaction.options.getString('date')){
+        case "сегодня":
+            day =  today.getDate() + "." + (today.getMonth()+1);
+            break;
+        case "завтра":
+            today.setDate(today.getDate() + 1);
+            day =  today.getDate() + "." + (today.getMonth()+1);
+            break;
+        case "послезавтра":
+            today.setDate(today.getDate() + 2);
+            day =  today.getDate() + "." + (today.getMonth()+1);
+            break;
+        default:
+            day = interaction.options.getString('date');
+            break;
+    }
+
+    var time = interaction.options.getString('time');
+    var name = interaction.options.getString('name');
+    var description = (interaction.options.getString('description') ?? "").replaceAll(/<@\d+>/g, "");
+    var date = ParseCommandAndGetDate(["_", day, time]);
+
+    return new RaidData(name, description, date, numberOfPlaces, [], [], member, member.user.avatarURL(), member.guild.id);
 }
 
 export function ParseCommandAndGetDate(args) {

@@ -5,10 +5,12 @@ import config from "./config.json" assert {type: "json"};
 import { Message } from "./discordEvents/message.js";
 import { AsyncMessageReactionAdd } from "./discordEvents/messageReactionAdd.js";
 import { AsyncMessageReactionRemove } from "./discordEvents/messageReactionRemove.js";
+import { InteractionCreate } from "./discordEvents/interactionCreate.js";
 // core
 import { CommandManager } from "./commands/commandManager.js";
 import { InitSheduler } from "./core/sheduler.js";
 import { FetchDefaultCatchErrorChannel } from "./core/catcherror.js";
+import { LoadAndDeployCommands } from "./commands/slashCommands.js"
 
 export const client = new Client(
 	{ 
@@ -39,9 +41,11 @@ client.on(Events.ClientReady, () => {
 	FetchDefaultCatchErrorChannel(client);
 	InitSheduler();
 	CommandManager.Init();
+	LoadAndDeployCommands(client);
 
 	console.log("Discord client connected!");
 });
 client.on(Events.MessageCreate, (_message) => Message(_message));
 client.on(Events.MessageReactionAdd, (reaction, user) => AsyncMessageReactionAdd(reaction, user));
 client.on(Events.MessageReactionRemove, (reaction, user) => AsyncMessageReactionRemove(reaction, user));
+client.on(Events.InteractionCreate, async interaction => InteractionCreate(interaction));

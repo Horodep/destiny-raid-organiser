@@ -1,31 +1,51 @@
-import { CatchError, CatchErrorAndDeleteByTimeout, CatchRaidError } from "../core/catcherror.js";
+import { CatchError, CatchRaidError } from "../core/catcherror.js";
 import { SendPrivateMessageToMember, SendPrivateMessageToMemberById } from "../core/messaging.js";
 import { CreateRaidMessage, GetRaidDataFromMessage } from "./raidEmbed.js";
-import { ParseCommandAndGetRaidData, ParseCommandAndGetDate, FormRaidInfoPrivateMessage, FormFullRaidInfoPrivateMessage } from "./raidLines.js";
+import { ParseMessageCommandAndGetRaidData, ParseSlashCommandAndGetRaidData, ParseCommandAndGetDate, FormRaidInfoPrivateMessage, FormFullRaidInfoPrivateMessage } from "./raidLines.js";
 import { SheduleRaid, CancelSheduledRaid } from "../core/sheduler.js";
 import { SafeDeleteMessageByTimeout } from "../core/safedeleting.js";
 import config from "../config.json" assert {type: "json"};
 
 export function CreateRaidFromMessage(message, args) {
     try {
-        if (CheckIfMemberHasBanRole(message.member)) throw 'Вы не можете создавать рейды.';     
-        var data = ParseCommandAndGetRaidData(args, message);
-        data.AddRaidMember(message.member.id);
-        FetchMentionsAndInvite(data, message);
+        if (CheckIfMemberHasBanRole(message.member)) throw 'Вы не можете создавать рейды.';
 
-        var embed = CreateRaidMessage(data);
-        
-        message.channel.send(embed).then((msg) => {
-            msg.react(":yes:1045279820910702614");
-            msg.react(":no:1045279822621986876");
-            msg.react(":info:1209800527152545812");
-            SheduleRaid(data, msg);
-        });
+        var raidData = ParseMessageCommandAndGetRaidData(args, message);
+        raidData.AddRaidMember(message.member.id);
+        FetchMentionsAndInvite(raidData, message);
+
+        message.channel
+            .send(CreateRaidMessage(raidData))
+            .then((msg) => {
+                msg.react(":yes:1045279820910702614");
+                msg.react(":no:1045279822621986876");
+                msg.react(":info:1209800527152545812");
+                SheduleRaid(raidData, msg);
+            });
     } catch (e) {
         if (typeof (e) == 'object') CatchError(e, message.channel);
         else CatchRaidError(e, message.content, message.channel);
     }
     message.delete();
+}
+
+export function CreateRaidFromSlashCommand(interaction, numberOfPlaces) {
+    var member = interaction.member;
+    if (CheckIfMemberHasBanRole(member)) throw 'Вы не можете создавать рейды.';
+
+    var raidData = ParseSlashCommandAndGetRaidData(interaction, numberOfPlaces);
+
+    raidData.AddRaidMember(member.id);
+    FetchTagsAndInvite(raidData, interaction.options.getString('booking'), interaction.guild);
+
+    interaction
+        .reply(CreateRaidMessage(raidData))
+        .then((msg) => {
+            msg.react(":yes:1045279820910702614");
+            msg.react(":no:1045279822621986876");
+            msg.react(":info:1209800527152545812"); 
+            SheduleRaid(raidData, msg);
+        });
 }
 
 export function MoveRaid(message, args, raidMessage) {
@@ -83,6 +103,19 @@ function FetchMentionsAndInvite(data, message) {
     var members = message.mentions.users
 					.filter(user => user.id != message.client.user.id)
 					.map(user => memberMatcher(user.id));
+    members.forEach(member => {
+        if(CheckMemberAndAddToRaid(member, data))
+            SendPrivateMessageToMember(member, 
+                FormRaidInfoPrivateMessage(data, "Автор сбора добавил вас в активность."));
+            })
+}
+
+function FetchTagsAndInvite(data, line, guild) {
+    if (!line) return;
+    
+    let memberMatcher = id => guild.members.cache.find(member => member.user.id == id);
+    var members = line.match(/<@\d+>/g).map(tag => tag.slice(2, -1)).map(id => memberMatcher(id));
+
     members.forEach(member => {
         if(CheckMemberAndAddToRaid(member, data))
             SendPrivateMessageToMember(member, 
