@@ -39,6 +39,7 @@ export function SheduleRaid(data, message) {
 
 function FetchRaidMembersAndInform(message) {
 	var data = GetRaidDataFromMessage(message);
+	console.log("Scheduled raid:", data.raidName, "players list:", data.members.join(", "));
 	var text = "Активность, в которую вы записались, начнется через 15 минут!";
 	InformRaidMembers(data, text, message.guild)
 }
