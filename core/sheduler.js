@@ -32,16 +32,20 @@ export function SheduleRaid(data, message) {
 	var inform_date = new Date(data.date.getTime() - 15 * 60 * 1000);
 	var delete_date = new Date(data.date.getTime() + 2 * 60 * 60 * 1000);
 
-	schedule.scheduleJob(message.id + "inform", inform_date, () => SaveRun(() => FetchRaidMembersAndInform(message)));
+	schedule.scheduleJob(message.id + "inform", inform_date, () => SaveRun(() => FetchRaidMembersAndInform(message.channel, message.id)));
 	schedule.scheduleJob(message.id + "delete", delete_date, () => SaveRun(() => SafeDeleteMessage(message)));
 	console.log("События запланированы.");
 }
 
-function FetchRaidMembersAndInform(message) {
-	var data = GetRaidDataFromMessage(message);
-	console.log("Scheduled raid:", data.raidName, "players list:", data.members.join(", "));
-	var text = "Активность, в которую вы записались, начнется через 15 минут!";
-	InformRaidMembers(data, text, message.guild)
+function FetchRaidMembersAndInform(channel, messageId) {
+	channel.messages.fetch(messageId)
+		.then(message => {
+			var data = GetRaidDataFromMessage(message);
+			console.log("Scheduled raid:", data.raidName, "players list:", data.members.join(", "));
+			var text = "Активность, в которую вы записались, начнется через 15 минут!";
+			InformRaidMembers(data, text, message.guild);
+		})
+		.catch(console.error);
 }
 
 export function CancelSheduledRaid(message) {
