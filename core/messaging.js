@@ -40,18 +40,17 @@ export function SendPrivateMessage(guild, args){
 }
 
 export async function SendPrivateMessageToMemberById(userId, guild, text){
-    var discordMember = await guild.members.fetch(userId);
-    SendPrivateMessageToMember(discordMember, text);
+    await guild.members.fetch(userId)
+        .then(member => SendPrivateMessageToMember(member, text))
+        .catch(e => console.error(`fetching user ${userId} had failed`));
 }
 
 export function SendPrivateMessageToMember(discordMember, text){
     if (discordMember.user.bot) return;
     console.log("pm " + discordMember.displayName);
-    discordMember.send(text).catch(
-        () => {
-            console.error("pm " + (discordMember?.displayName ?? discordMember) + " WAS NOT SENT");
-        }
-    );
+    discordMember
+        .send(text)
+        .catch(e => console.error(`pm ${discordMember?.displayName ?? discordMember} WAS NOT SENT`));
 }
 
 export function LoggingToChannel (guild, ...args) {
