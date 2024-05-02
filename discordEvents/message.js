@@ -8,6 +8,7 @@ export function Message(message){
 		if (message.author.bot) return;
 		
 		switch(message.channel.type){
+			case ChannelType.GuildAnnouncement:
 			case ChannelType.GuildText:
 				if (!message.content.startsWith("!")) return;
 		
