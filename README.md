@@ -53,6 +53,10 @@ In guilds: id - guild id, mention - role id for glogal mentions, raids - array o
             "id"            : "000000000000000000",
             "mention"       : "000000000000000000",
             "ban"           : "000000000000000000",
+            "admin"         : [
+              "000000000000000000",
+              "000000000000000000"
+            ],
             "raids"         : [
               "000000000000000000",
               "000000000000000000"
@@ -64,6 +68,9 @@ In guilds: id - guild id, mention - role id for glogal mentions, raids - array o
             "id"            : "000000000000000000",
             "mention"       : "000000000000000000",
             "ban"           : "000000000000000000",
+            "admin"         : [
+              "000000000000000000"
+            ],
             "raids"         : [
               "000000000000000000",
               "000000000000000000"

@@ -157,7 +157,10 @@ export async function RefreshRaidUi(message) {
 
 export function KickRaidMemberByEmoji(message, user, reaction) {
     var data = GetRaidDataFromMessage(message);
-    if (data.author.id != user.id) {
+    var discordMember = message.guild.members.cache.find(member => member.user.id == user.id);
+
+    if (data.author.id != user.id && 
+        !CheckIfMemberHasAdminRole(discordMember)) {
         user.send("Вы не являетесь автором сбора. Вы не можете им управлять.");
         return;
     }
@@ -167,17 +170,21 @@ export function KickRaidMemberByEmoji(message, user, reaction) {
 
     if (userId?.length > 0) {
         SendPrivateMessageToMemberById(userId, message.guild, 
-            FormRaidInfoPrivateMessage(data, "Автор сбора отказался от вашего участия в активности, в которую вы записывались."));
+            FormRaidInfoPrivateMessage(data, "Автор сбора или администратор отказался от вашего участия в активности, в которую вы записывались."));
     }
     message.edit(CreateRaidMessage(data));
 }
 
 export function CancelRaidByEmoji(message, user) {
     var data = GetRaidDataFromMessage(message);
-    if (data.author.id != user.id) {
-        user.send("Вы не являетесь автором сбора. Вы не можете его отменить.");
+    var discordMember = message.guild.members.cache.find(member => member.user.id == user.id);
+
+    if (data.author.id != user.id && 
+        !CheckIfMemberHasAdminRole(discordMember)) {
+        user.send("Вы не являетесь автором сбора. Вы не можете им управлять.");
         return;
     }
+    
     CancelRaid(data, message);
 }
 
@@ -188,7 +195,7 @@ export function CancelRaidByMessage(message, args, raidMessage) {
 }
 
 export function CancelRaid(data, raidMessage) {
-    InformRaidMembers(data, "Активность на которую вы записывались была отменена автором сбора:", raidMessage.guild);
+    InformRaidMembers(data, "Активность на которую вы записывались была отменена автором сбора или администратором:", raidMessage.guild);
     CancelSheduledRaid(raidMessage);
     SafeDeleteMessageByTimeout(raidMessage, 150);
 }
@@ -204,6 +211,15 @@ export function InformRaidMembers(data, messageText, guild, oldData) {
 export function CheckIfMemberHasBanRole(discordMember){
     var banRole = config.guilds.find(g => g.id == discordMember.guild.id).ban;
     return (discordMember.roles.cache.find( role => role.id == banRole));
+}
+
+export function CheckIfMemberHasAdminRole(discordMember){
+    var adminRoles = config.guilds.find(g => g.id == discordMember.guild.id).admin;
+    for(var i = 0; i < adminRoles.length; i++)
+        if (discordMember.roles.cache.find( role => role.id == adminRoles[i]))
+            return true;
+    
+    return false;
 }
 
 export async function PmRaidInfo(message, user) {
