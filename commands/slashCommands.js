@@ -20,7 +20,9 @@ export async function LoadAndDeployCommands(client) {
 				.then(() => console.log('Successfully deleted all application commands.'))
 				.catch(console.error);
 
-			await rest.put(Routes.applicationCommands(config.credentials.applicationId), { body: commands });
+			await rest.put(Routes.applicationCommands(config.credentials.applicationId), { body: commands })
+				.then(() => console.log('Successfully created all application commands.'))
+				.catch(console.error);
 		} catch (error) {
 		  	console.error(error);
 		}
