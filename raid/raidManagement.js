@@ -215,7 +215,7 @@ export function CheckIfMemberHasBanRole(discordMember){
 
 export function CheckIfMemberHasAdminRole(discordMember){
     var adminRoles = config.guilds.find(g => g.id == discordMember.guild.id).admin;
-    for(var i = 0; i < adminRoles.length; i++)
+    for(var i = 0; i < adminRoles?.length ?? 0; i++)
         if (discordMember.roles.cache.find( role => role.id == adminRoles[i]))
             return true;
     
