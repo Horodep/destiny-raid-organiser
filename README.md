@@ -34,10 +34,23 @@ This is a discord bot created to manage raid appointments in the game Destiny 2.
   list of raids, guardian is going to participate in;
 
 ## example config.json
-In guilds: id - guild id, mention - role id for glogal mentions, raids - array of raid channel ids, log - log channel id (optional).
+In guilds: 
+| Field | explanation |
+| ----- | ----------- |
+| title | guild title |
+| id | guild id |
+| mention | role id for glogal mentions, _optional_ |
+| ban | role id for users that can't take part in the activities, _optional_ |
+| admin | array of role ids of guild admins (they can kick from the activities or cancel it), _optional_ |
+| raids | array of channel ids for the activity posts |
+| contents | array of channel ids where the context post should be created, _optional_ |
+| roleRegexp | dictionary of pairs role id to emoji for replacing in content posts, _optional_ |
+| log | log channel id, _optional_ |
 ```json
 {   
     "credentials":{
+        "clientId": "000000000000000000",
+        "applicationId": "000000000000000000",
         "discordApiKey" : "qwerqwrqwrwqerqwrqwerqwrqwerqwerqwreqwerqwerqwrqwerqwrqwrqwrqw"
     },
     
@@ -73,13 +86,7 @@ In guilds: id - guild id, mention - role id for glogal mentions, raids - array o
         {
             "title"         : "guild2",
             "id"            : "000000000000000000",
-            "mention"       : "000000000000000000",
-            "ban"           : "000000000000000000",
-            "admin"         : [
-              "000000000000000000"
-            ],
             "raids"         : [
-              "000000000000000000",
               "000000000000000000"
             ]
         }
