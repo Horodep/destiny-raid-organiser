@@ -7,8 +7,10 @@ export class RaidData {
     left = [];
     author; // .displayName , .id , .user.avatarURL
     guildId;
+    channelId;
+    messageId;
 
-    constructor(raidName, description, date, numberOfPlaces, members, left, author, avatarURL, guildId) {
+    constructor(raidName, description, date, numberOfPlaces, members, left, author, avatarURL, guildId, channelId, messageId) {
         this.raidName = raidName;
         this.description = description;
         this.date = date;
@@ -18,6 +20,8 @@ export class RaidData {
         this.author = author;
         this.author.avatarURL = avatarURL;
         this.guildId = guildId;
+        this.channelId = channelId;
+        this.messageId = messageId;
     }
 
     get dateString() {
@@ -34,6 +38,10 @@ export class RaidData {
 
     get descriptionField() {
         return "**" + this.dateString + "**" + '\u200B' + " " + this.dateRelative + "\n" + (this.description ?? "");
+    }
+
+    get descriptionWithoutTags() {
+        return this.description?.replaceAll(/<@&\d+>/g, "") ?? "";
     }
 
     get footer() {
@@ -57,6 +65,10 @@ export class RaidData {
         return "<t:" + this.date.getTime()/1000 + ":R>";
     }
 
+    get messageUrl() {
+        return `https://discord.com/channels/${this.guildId}/${this.channelId}/${this.messageId}`;
+    }
+
     FormFields() {
         var prefilter = this.AddSlotsToMembers().map(m => (m.charAt(0) == 'с' ? m : "<@" + m + ">"));
         var field0 = prefilter.filter((_, i) => i < this.numberOfPlaces / 2).join("\n");
@@ -66,7 +78,7 @@ export class RaidData {
     }
 
     AddSlotsToMembers() {
-        var arr = this.members;
+        var arr = Array.from(this.members);
         while (arr.length < this.numberOfPlaces) arr.push("слот свободен");
         return arr;
     }
@@ -123,10 +135,31 @@ function weekdayTranslaytor(num) {
     }
 }
 
+function shortWeekdayTranslaytor(num) {
+    switch (num) {
+        case 0: return "вс";
+        case 1: return "пн";
+        case 2: return "вт";
+        case 3: return "ср";
+        case 4: return "чт";
+        case 5: return "пт";
+        case 6: return "сб";
+    }
+}
+
 function GetShortDate(date) {
     return "" +
         (date.getMonth() < 9 ? "0" : "") + (date.getMonth() + 1) + "-" +
         (date.getDate() < 10 ? "0" : "") + date.getDate() + " " +
+        (date.getHours() < 10 ? "0" : "") + date.getHours() + ":" +
+        (date.getMinutes() < 10 ? "0" : "") + date.getMinutes();
+}
+
+export function GetShortDateWithWeekday(date) {
+    return "" + 
+        (date.getDate() < 10 ? "0" : "") + date.getDate() + "." +
+        (date.getMonth() < 9 ? "0" : "") + (date.getMonth() + 1) + " " +
+        shortWeekdayTranslaytor(date.getDay()) + " " +
         (date.getHours() < 10 ? "0" : "") + date.getHours() + ":" +
         (date.getMinutes() < 10 ? "0" : "") + date.getMinutes();
 }

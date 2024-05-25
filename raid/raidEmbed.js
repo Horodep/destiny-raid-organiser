@@ -73,7 +73,9 @@ export function GetRaidDataFromMessage(message) {
             id: embed.footer.text.split(' | ').slice(-1).join(' | ').replace("id: ", "")
         },
         embed.footer.iconURL,
-        message.guild.id
+        message.guild.id,
+        message.channel.id,
+        message.id
     );
 }
 

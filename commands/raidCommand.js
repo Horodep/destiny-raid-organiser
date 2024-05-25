@@ -1,7 +1,7 @@
 import { Command } from "./command.js";
-import config from "../config.json" assert {type: "json"};
 
-import { ClearRaidList, raidChannels } from "../raid/raidMisc.js"
+import { ClearRaidList } from "../raid/raidMisc.js"
+import { raidChannels } from "../raid/contents.js"
 import { CreateRaidFromMessage } from "../raid/raidManagement.js"
 
 class RaidCommand extends Command {

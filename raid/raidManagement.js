@@ -4,6 +4,7 @@ import { CreateRaidMessage, GetRaidDataFromMessage } from "./raidEmbed.js";
 import { ParseMessageCommandAndGetRaidData, ParseSlashCommandAndGetRaidData, ParseCommandAndGetDate, FormRaidInfoPrivateMessage, FormFullRaidInfoPrivateMessage } from "./raidLines.js";
 import { SheduleRaid, CancelSheduledRaid } from "../core/sheduler.js";
 import { SafeDeleteMessageByTimeout } from "../core/safedeleting.js";
+import { raidDataArray, CheckAndUpdateContentMessage, FindAndUpdateRaidData, FindAndDeleteRaidData } from "../raid/contents.js"
 import config from "../config.json" assert {type: "json"};
 
 export function CreateRaidFromMessage(message, args) {
@@ -17,10 +18,13 @@ export function CreateRaidFromMessage(message, args) {
         message.channel
             .send(CreateRaidMessage(raidData))
             .then((msg) => {
+                raidData.messageId = msg.id;
+                raidDataArray[raidData.channelId].push(raidData);
                 msg.react(":yes:1045279820910702614");
                 msg.react(":no:1045279822621986876");
                 msg.react(":info:1209800527152545812");
                 SheduleRaid(raidData, msg);
+                CheckAndUpdateContentMessage(raidData.channelId);
             });
     } catch (e) {
         if (typeof (e) == 'object') CatchError(e, message.channel);
@@ -41,10 +45,13 @@ export function CreateRaidFromSlashCommand(interaction, numberOfPlaces) {
     interaction
         .reply(CreateRaidMessage(raidData))
         .then((msg) => {
+            raidData.messageId = msg.id;
+            raidDataArray[raidData.channelId].push(raidData);
             msg.react(":yes:1045279820910702614");
             msg.react(":no:1045279822621986876");
             msg.react(":info:1209800527152545812"); 
             SheduleRaid(raidData, msg);
+            CheckAndUpdateContentMessage(raidData.channelId);
         });
 }
 
@@ -55,6 +62,7 @@ export function MoveRaid(message, args, raidMessage) {
     var embed = CreateRaidMessage(data);
     raidMessage.edit(embed);
 
+    FindAndUpdateRaidData(data);
     CancelSheduledRaid(raidMessage);
     SheduleRaid(data, raidMessage);
     InformRaidMembers(data, "Активность на которую вы записывались была перенесена:", message.guild, oldDate);
@@ -70,6 +78,7 @@ export function ChangeRaidDescription(message, args, raidMessage) {
     data.description = args.filter((_, i) => i > 0).join(" ");
     var embed = CreateRaidMessage(data);
     raidMessage.edit(embed);
+    FindAndUpdateRaidData(data);
 
     InformRaidMembers(data, "Коментарий к активности на которую вы записывались был изменен:", message.guild, oldDescription ?? "");
     
@@ -85,6 +94,7 @@ export function AddRaidMember(message, user) {
     if (!CheckMemberAndAddToRaid(discordMember, data)) return;
 
     message.edit(CreateRaidMessage(data));
+    FindAndUpdateRaidData(data);
 }
 
 export function InviteRaidMember(message, args, raidMessage) {
@@ -95,6 +105,7 @@ export function InviteRaidMember(message, args, raidMessage) {
     FetchMentionsAndInvite(data, message);
 
     raidMessage.edit(CreateRaidMessage(data));
+    FindAndUpdateRaidData(data);
     message.delete();
 }
 
@@ -137,6 +148,7 @@ export function RemoveRaidMember(message, user) {
     data.RemoveRaidMember(user.id);
     data.AddToLeftField(user.id);
     message.edit(CreateRaidMessage(data));
+    FindAndUpdateRaidData(data);
 }
 
 export async function RefreshRaidUi(message) {
@@ -173,6 +185,7 @@ export function KickRaidMemberByEmoji(message, user, reaction) {
             FormRaidInfoPrivateMessage(data, "Автор сбора или администратор отказался от вашего участия в активности, в которую вы записывались."));
     }
     message.edit(CreateRaidMessage(data));
+    FindAndUpdateRaidData(data);
 }
 
 export function CancelRaidByEmoji(message, user) {
@@ -197,6 +210,7 @@ export function CancelRaidByMessage(message, args, raidMessage) {
 export function CancelRaid(data, raidMessage) {
     InformRaidMembers(data, "Активность на которую вы записывались была отменена автором сбора или администратором:", raidMessage.guild);
     CancelSheduledRaid(raidMessage);
+    FindAndDeleteRaidData(data);
     SafeDeleteMessageByTimeout(raidMessage, 150);
 }
 

@@ -1,5 +1,6 @@
 import { AddRaidMember, RemoveRaidMember, RefreshRaidUi, PmRaidInfo, KickRaidMemberByEmoji, CancelRaidByEmoji } from "../raid/raidManagement.js";
 import { CatchErrorAndDeleteByTimeout } from "../core/catcherror.js";
+import { CheckAndUpdateContentMessage } from "../raid/contents.js"
 import { LoggingToChannel } from "../core/messaging.js";
 
 export async function AsyncMessageReactionAdd(reaction, user) {
@@ -11,7 +12,13 @@ export async function AsyncMessageReactionAdd(reaction, user) {
 		console.log(line);
 		LoggingToChannel (reaction.message.guild, line);
 
-		if (reaction.message.embeds[0]?.footer?.text.startsWith("Собрал")) HandleRaids(reaction, user);
+		if (reaction.message.embeds[0]?.title == "Запланированные активности:" && reaction._emoji.name == "refresh"){
+			CheckAndUpdateContentMessage(reaction.message.channel.id);
+			reaction.users.remove(user);
+		}
+
+		if (reaction.message.embeds[0]?.footer?.text.startsWith("Собрал"))
+			HandleRaids(reaction, user);
 	} catch (error) {
 		CatchErrorAndDeleteByTimeout(error, reaction?.message?.channel, 15000);
 		return;

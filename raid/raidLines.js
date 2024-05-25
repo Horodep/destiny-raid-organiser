@@ -19,8 +19,8 @@ export function ParseMessageCommandAndGetRaidData(args, message) {
     var raidName = raidInfo.indexOf(',') == -1 ? raidInfo : raidInfo.substr(0, raidInfo.indexOf(','));
     if (raidName == '') throw 'Активность не определена.';
 
-    var description = (raidInfo.indexOf(',') == -1 ? null : raidInfo.substr(raidInfo.indexOf(',') + 1));
-    if (description != null){
+    var description = (raidInfo.indexOf(',') == -1 ? "" : raidInfo.substr(raidInfo.indexOf(',') + 1));
+    if (description != ""){
         message.mentions.users.forEach(mention => {
             description = description.replaceAll(mention, "");
         });
@@ -30,7 +30,17 @@ export function ParseMessageCommandAndGetRaidData(args, message) {
     var numberOfPlaces = commandRaidInfo.match(/^\[\d+\]/);
     var numberOfPlaces = (numberOfPlaces == null) ? 6 : numberOfPlaces[0].match(/\d+/)[0];
 
-    return new RaidData(raidName, description, date, numberOfPlaces, [], [], member, member.user.avatarURL(), member.guild.id);
+    return new RaidData(
+        raidName, 
+        description, 
+        date, 
+        numberOfPlaces, 
+        [], [], 
+        member, 
+        member.user.avatarURL(), 
+        message.guild.id, 
+        message.channel.id, 
+        null);
 }
 
 export function ParseSlashCommandAndGetRaidData(interaction, numberOfPlaces) {
@@ -60,7 +70,17 @@ export function ParseSlashCommandAndGetRaidData(interaction, numberOfPlaces) {
     var description = (interaction.options.getString('description') ?? "").replaceAll(/<@\d+>/g, "");
     var date = ParseCommandAndGetDate(["_", day, time]);
 
-    return new RaidData(name, description, date, numberOfPlaces, [], [], member, member.user.avatarURL(), member.guild.id);
+    return new RaidData(
+        name, 
+        description, 
+        date, 
+        numberOfPlaces, 
+        [], [], 
+        member, 
+        member.user.avatarURL(), 
+        interaction.guild.id,
+        interaction.channel.id,
+        null);
 }
 
 export function ParseCommandAndGetDate(args) {

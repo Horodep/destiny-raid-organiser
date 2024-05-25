@@ -1,7 +1,6 @@
 import config from "../config.json" assert {type: "json"};
 import { GetRaidDataFromMessage } from "./raidEmbed.js";
-
-export const raidChannels = config.guilds.map(guild => guild.raids).flat(1);
+import { raidChannels } from "../raid/contents.js"
 
 export function ClearRaidList(message) {
     if (!raidChannels.includes(message.channel.id)) return;
@@ -21,6 +20,9 @@ export function ClearRaidList(message) {
             }
 
             try{
+                if (msg.embeds[0]?.title.startsWith('Запланированные активности:'))
+                    return;
+
                 var data = GetRaidDataFromMessage(msg);
                 console.log(data.date, data.header);
                 if (data.date < today) {

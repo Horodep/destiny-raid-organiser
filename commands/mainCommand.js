@@ -1,6 +1,7 @@
 import { Command } from "./command.js";
 import { CommandManager } from "./commandManager.js"
-import { AsyncGetPlannedRaids, raidChannels } from "../raid/raidMisc.js"
+import { AsyncGetPlannedRaids } from "../raid/raidMisc.js"
+import { raidChannels } from "../raid/contents.js"
 import { SafeDeleteMessageByTimeout } from "../core/safedeleting.js";
 
 class MainCommand extends Command {

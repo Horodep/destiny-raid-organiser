@@ -9,6 +9,7 @@ import { InteractionCreate } from "./discordEvents/interactionCreate.js";
 // core
 import { CommandManager } from "./commands/commandManager.js";
 import { InitSheduler } from "./core/sheduler.js";
+import { GenerateContents } from "./raid/contents.js";
 import { FetchDefaultCatchErrorChannel } from "./core/catcherror.js";
 import { LoadAndDeployCommands } from "./commands/slashCommands.js"
 
@@ -35,7 +36,7 @@ export const client = new Client(
 
 client.login(config.credentials.discordApiKey);
 
-client.on(Events.ClientReady, () => {
+client.on(Events.ClientReady, async () => {
 	client.user.setActivity("Support: horodep");
 	config.guilds.forEach(guild_data => {
 		var guild = client.guilds.cache.get(guild_data.id);
@@ -43,7 +44,8 @@ client.on(Events.ClientReady, () => {
 	});
 	
 	FetchDefaultCatchErrorChannel(client);
-	InitSheduler();
+	await InitSheduler();
+	GenerateContents();
 	CommandManager.Init();
 	LoadAndDeployCommands(client);
 
