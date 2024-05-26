@@ -48,6 +48,7 @@ export async function AsyncGetPlannedRaids(message, discordMention) {
     }));
     var messages = messages.map(i => Array.from(i.values())).flat(1)
     var messages = messages.filter(msg => msg.client.user.id == msg.author.id)
+    var messages = messages.filter(msg => msg.embeds[0]?.footer?.text.startsWith("Собрал"))
     var raids = messages.map(m => GetRaidDataFromMessage(m)).sort((a, b) => a.date - b.date);
     var myraids = raids.filter(r => r?.members?.includes(discordId));
     message.channel.send(myraids.length == 0
