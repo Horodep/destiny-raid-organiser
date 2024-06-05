@@ -3,12 +3,14 @@ import { client } from "../index.js"
 import { CatchShedulerError } from "./catcherror.js";
 import { GetRaidDataFromMessage } from "../raid/raidEmbed.js";
 import { InformRaidMembers } from "../raid/raidManagement.js";
-import { raidChannels, raidDataArray, CheckAndUpdateContentMessage } from "../raid/contents.js"
+import { raidChannels, raidDataArray, FindAndDeleteRaidDataByMessageId } from "../raid/contents.js"
 import { SafeDeleteMessage } from "../core/safedeleting.js";
 
 export async function InitSheduler() {
 	for (var job in schedule.scheduledJobs)
 		schedule.cancelJob(job);
+
+    var today = new Date();
 
 	for (var id of raidChannels) {
 		raidDataArray[id] = [];
@@ -24,8 +26,10 @@ export async function InitSheduler() {
 				if (msg.client.user.id != msg.author.id) continue;
 
 				var data = GetRaidDataFromMessage(msg);
-				raidDataArray[id].push(data);
 				SheduleRaid(data, msg);
+
+				if (data.date < today) continue;
+				raidDataArray[id].push(data);
 			}catch(e){
 				if(e != "Сообщение не распознано как рейд.")
 					CatchShedulerError(e, client);
@@ -41,7 +45,7 @@ export function SheduleRaid(data, message) {
 
 	schedule.scheduleJob(message.id + "inform", inform_date, () => SaveRun(() => FetchRaidMembersAndInform(message.channel, message.id)));
 	schedule.scheduleJob(message.id + "delete", delete_date, () => SaveRun(() => SafeDeleteMessage(message)));
-	schedule.scheduleJob(message.id + "startd", delete_date, () => SaveRun(() => CheckAndUpdateContentMessage(message.channel.id)));
+	schedule.scheduleJob(message.id + "startd", data.date, () => SaveRun(() => FindAndDeleteRaidDataByMessageId(message.channel.id, message.id)));
 	console.log("События запланированы.");
 }
 

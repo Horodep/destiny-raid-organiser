@@ -59,7 +59,7 @@ async function CheckIfMessageIsLast(channel, messageId) {
 }
 
 function CreateContentMessage(channelId) {
-    var description = "";
+    var description = '\u200b';
     var today = new Date();
 
     var guildId = raidDataArray[channelId][0].guildId;
@@ -124,4 +124,13 @@ export function FindAndDeleteRaidData(data){
         raidDataArray[data.channelId].splice(index, 1);
 
     CheckAndUpdateContentMessage(data.channelId);
+}
+
+export function FindAndDeleteRaidDataByMessageId(channelId, messageId){
+    var raid = raidDataArray[channelId].find(i => i.messageId == messageId);
+    var index = raidDataArray[channelId].indexOf(raid);
+    if (index > -1)
+        raidDataArray[channelId].splice(index, 1);
+
+    CheckAndUpdateContentMessage(channelId);
 }
