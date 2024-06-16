@@ -6,7 +6,7 @@ import { GetGlobalMentionForGuild } from "./raidLines.js";
 export function CreateRaidMessage(data, customTimestamp) {
     if (data.header.length > 256)
         throw 'Длина заголовка сбора не может быть больше 256 символов.';
-    else if (data.header.match(/<@&\d+>/g)?.length > 0)
+    else if (data.header.match(/<@&?\d+>/g)?.length > 0)
         throw 'В заголовке сбора не должно быть упоминаний, используйте описание.';
     else if (data.description != null && data.description.length > 2048)
         throw 'Длина комментария сбора не может быть больше 2048 символов.';
