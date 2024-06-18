@@ -117,7 +117,11 @@ export async function FormFullRaidInfoPrivateMessage(data, guild) {
     {
         if (data.members[i] != "слот свободен"){
             var discordMember = await guild.members.fetch(data.members[i]);
-            line += `\n> • <@${data.members[i]}> (${discordMember.displayName})`;
+
+            if (discordMember)
+                line += `\n> • <@${data.members[i]}> (${discordMember.displayName})`;
+            else
+                line += `\n> • пользователь не найден`;
         }       
     }
     return line;
