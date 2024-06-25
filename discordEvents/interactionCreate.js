@@ -25,6 +25,6 @@ export async function InteractionCreate(interaction){
 		}
 	} catch (error) {
 		console.error(error);
-		await interaction.reply({ content: `Ошибка ${error.name}: ${error.message}`, ephemeral: true });
+		await interaction.reply({ content: `Ошибка: ${error}`, ephemeral: true });
 	}
 };
