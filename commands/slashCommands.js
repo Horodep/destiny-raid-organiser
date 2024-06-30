@@ -56,7 +56,8 @@ export const listOfCommands = [
 					{ name: 'Клятва Послушника', value: 'Клятва Послушника' },
 					{ name: 'Гибель Короля', value: 'Гибель Короля' },
 					{ name: 'Источник Кошмаров', value: 'Источник Кошмаров' },
-					{ name: 'Крах Кроты', value: 'Крах Кроты' }
+					{ name: 'Крах Кроты', value: 'Крах Кроты' },
+					{ name: 'Грань Cпасения', value: 'Грань Cпасения' }
 				))
 			.addStringOption(option => option
 				.setName('description')
