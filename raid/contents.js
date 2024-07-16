@@ -60,6 +60,8 @@ async function CheckIfMessageIsLast(channel, messageId) {
 
 function CreateContentMessage(channelId) {
     var description = '\u200b';
+    var fields_count = -1;
+    var fields = new Array();
     var today = new Date();
 
     var guildId = raidDataArray[channelId][0].guildId;
@@ -70,28 +72,48 @@ function CreateContentMessage(channelId) {
     for (var data of raidDataArray[channelId]){
         if (data.date < today) continue;
 
+        var nextline = "";
         var counter = data.description == "" ? 40 : 34;
         var title = data.raidName.length > counter ?
             data.raidName.slice(0, counter) + "..." : data.raidName;
 
-        description += "`" + GetShortDateWithWeekday(data.date) + "`";
-        description += " `+" + (data.numberOfPlaces - data.members.length) + "` ";
-        description += `[**${title}** ${data.description == "" ? "" : "(info)"}]`;
-        description += `(${data.messageUrl} "${data.raidName}${data.description == "" ? "" : ","}${data.descriptionWithoutTags}")`;
+        nextline += "`" + GetShortDateWithWeekday(data.date) + "`";
+        nextline += " `+" + (data.numberOfPlaces - data.members.length) + "` ";
+        nextline += `[**${title}** ${data.description == "" ? "" : "(info)"}]`;
+        nextline += `(${data.messageUrl} "${data.raidName}${data.description == "" ? "" : ","}${data.descriptionWithoutTags}")`;
 
         if (data.roleTag){
             var roleId = data.roleTag.join(' ').match(/\d+/g);
             var emoji = regex == undefined ? undefined : regex[roleId];
-            description += " " + ((emoji != undefined) ? emoji : ":question:");
+            nextline += " " + ((emoji != undefined) ? emoji : ":question:");
         }
 
-        description += "\n";
+        if (fields_count == -1){
+            if (description.length + nextline.length < 4096){
+                description += nextline + "\n";
+            }else{
+                fields_count++;
+                fields[fields_count] = nextline + "\n";
+            }
+        }
+        else
+        {
+            if (fields[fields_count].length + nextline.length < 1024){
+                fields[fields_count] += nextline + "\n";
+            }else{
+                fields_count++;
+                fields[fields_count] = nextline + "\n";
+            }
+        }
     }
 
     var embed = new EmbedBuilder()
         .setTitle("Запланированные активности:")
         .setDescription(description)
         .setColor(0x00AE86);
+    
+    for (var field of fields)
+        embed.addFields([{ name: '\u200b`●● ●● ●● ●● ●●`', value: field }])
 
     return { content: "", embeds: [embed], fetchReply: true };
 }
