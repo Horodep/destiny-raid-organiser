@@ -129,6 +129,8 @@ export async function FormFullRaidInfoPrivateMessage(data, guild) {
 
 export function GetGlobalMentionForGuild(guildId){
     var mentions = config.guilds.find(g => g.id == guildId).mentions;
-    var line = mentions.map(mention => "<@&" + mention + ">");
-    return mentions ? line.join(' ') : "@here";
+    if (mentions)
+        return mentions.map(mention => "<@&" + mention + ">").join(' ');
+    else
+        return "@here";
 }
