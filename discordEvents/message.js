@@ -1,6 +1,7 @@
 import { ChannelType } from "discord.js";
 import { LoggingToChannel } from "../core/messaging.js";
 import { CatchError } from "../core/catcherror.js";
+import { SheduleMessageDelete } from "../core/sheduler.js";
 import { CommandManager } from "../commands/commandManager.js";
 
 export function Message(message){
@@ -9,7 +10,10 @@ export function Message(message){
 		
 		switch(message.channel.type){
 			case ChannelType.GuildText:
-				if (!message.content.startsWith("!")) return;
+				if (!message.content.startsWith("!")) {
+					SheduleMessageDelete(message);
+					return;
+				}
 		
 				console.log(message.member?.displayName ?? message.author.username, message.content);
 				LoggingToChannel (message.guild, message.member?.displayName ?? message.author.username, message.content);

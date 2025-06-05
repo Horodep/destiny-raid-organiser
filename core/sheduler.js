@@ -3,7 +3,7 @@ import { client } from "../index.js"
 import { CatchShedulerError } from "./catcherror.js";
 import { GetRaidDataFromMessage } from "../raid/raidEmbed.js";
 import { InformRaidMembers } from "../raid/raidManagement.js";
-import { raidChannels, raidDataArray, FindAndDeleteRaidDataByMessageId } from "../raid/contents.js"
+import { raidChannels, raidDataArray, FindAndDeleteRaidDataByMessageId } from "../raid/contents.js";
 import { SafeDeleteMessage } from "../core/safedeleting.js";
 
 export async function InitSheduler() {
@@ -11,6 +11,7 @@ export async function InitSheduler() {
 		schedule.cancelJob(job);
 
     var today = new Date();
+    var two_hours = 2 * 60 * 60 * 1000;
 
 	for (var id of raidChannels) {
 		raidDataArray[id] = [];
@@ -23,19 +24,34 @@ export async function InitSheduler() {
 		for (var kvp of messages) {
 			var msg = kvp[1];
 			try{
-				if (msg.client.user.id != msg.author.id) continue;
+				if (msg.client.user.id != msg.author.id) {
+					// не рейд
+					
+					if (today > new Date(msg.createdTimestamp + two_hours)) {
+						SaveRun(() => SafeDeleteMessage(msg));
+					} else {
+						SheduleMessageDelete(msg);
+					}
+				} else {
+					// рейд
 
-				var data = GetRaidDataFromMessage(msg);
-				SheduleRaid(data, msg);
+					var data = GetRaidDataFromMessage(msg);
+					SheduleRaid(data, msg);
 
-				if (data.date < today) continue;
-				raidDataArray[id].push(data);
-			}catch(e){
+					if (data.date < today) continue;
+					raidDataArray[id].push(data);
+				}
+			} catch(e) {
 				if(e != "Сообщение не распознано как рейд.")
 					CatchShedulerError(e, client);
 			}
 		}
 	}
+}
+
+export function SheduleMessageDelete(message) {
+	var delete_date = new Date(data.date.getTime() + 2 * 60 * 60 * 1000);
+	schedule.scheduleJob(message.id + "delete", delete_date, () => SaveRun(() => SafeDeleteMessage(message)));
 }
 
 export function SheduleRaid(data, message) {
