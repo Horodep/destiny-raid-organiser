@@ -50,7 +50,7 @@ export async function InitSheduler() {
 }
 
 export function SheduleMessageDelete(message) {
-	var delete_date = new Date(data.date.getTime() + 2 * 60 * 60 * 1000);
+	var delete_date = new Date(message.createdTimestamp + 2 * 60 * 60 * 1000);
 	schedule.scheduleJob(message.id + "delete", delete_date, () => SaveRun(() => SafeDeleteMessage(message)));
 }
 
