@@ -27,10 +27,12 @@ export async function InitSheduler() {
 				if (msg.client.user.id != msg.author.id) {
 					// не рейд
 					
-					if (today > new Date(msg.createdTimestamp + two_hours)) {
-						SaveRun(() => SafeDeleteMessage(msg));
-					} else {
-						SheduleMessageDelete(msg);
+					if (!msg.author.bot && !msg.pinned){
+						if (today > new Date(msg.createdTimestamp + two_hours)) {
+							SaveRun(() => SafeDeleteMessage(msg));
+						} else {
+							SheduleMessageDelete(msg);
+						}
 					}
 				} else {
 					// рейд
