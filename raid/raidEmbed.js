@@ -107,6 +107,8 @@ const activities = [
         image:   "https://www.bungie.net/img/theme/destiny/icons/fireteams/fireteams_salvationsedge.png" },
     {   strings: ["веспер", "vesper", "host"],
         image:   "https://cdn.discordapp.com/attachments/799584345156616195/1296458809681903667/vesper.png" },
+    {   strings: ["вера", "отсеченн", "sundered", "doctrine"],
+        image:   "https://cdn.discordapp.com/attachments/1047038338344964116/1379988544092901417/sundered-doctrine.png" },
     {   strings: ["трон", "throne"],
         image:   "https://cdn.discordapp.com/attachments/799584345156616195/1207633220527464448/208ce44c0342f8b0691d483d9622bd96.png" },
     {   strings: ["яма", "pit"],

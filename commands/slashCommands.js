@@ -101,7 +101,8 @@ export const listOfCommands = [
 					{ name: 'Шпиль Хранителя', value: 'Шпиль Хранителя' },
 					{ name: 'Призраки Глубин', value: 'Призраки Глубин' },
 					{ name: 'Руины Полководца', value: 'Руины Полководца' },
-					{ name: 'В гостях на "Веспере"', value: 'В гостях на "Веспере"' }
+					{ name: 'В гостях на "Веспере"', value: 'В гостях на "Веспере"' },
+					{ name: 'Отсеченная Вера', value: 'Отсеченная Вера' }
 				))
 			.addStringOption(option => option
 				.setName('description')
