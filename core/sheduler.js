@@ -55,7 +55,7 @@ export async function InitSheduler() {
 
 export function SheduleMessageDelete(message) {
 	var delete_date = new Date(message.createdTimestamp + autodelete_delay);
-	console.log("Сообщение ", message.id, " будет удалено ", delete_date);
+	console.log("Сообщение", message.id, "будет удалено", delete_date);
 	schedule.scheduleJob(message.id + "delete", delete_date, () => SaveRun(() => SafeDeleteMessage(message)));
 }
 
