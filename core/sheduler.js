@@ -3,15 +3,17 @@ import { client } from "../index.js"
 import { CatchShedulerError } from "./catcherror.js";
 import { GetRaidDataFromMessage } from "../raid/raidEmbed.js";
 import { InformRaidMembers } from "../raid/raidManagement.js";
-import { raidChannels, raidDataArray, FindAndDeleteRaidDataByMessageId } from "../raid/contents.js";
+import { raidChannels, raidDataArray, autodeletedChannels, FindAndDeleteRaidDataByMessageId } from "../raid/contents.js";
 import { SafeDeleteMessage } from "../core/safedeleting.js";
+
+
+const autodelete_delay = 2 * 60 * 60 * 1000;
 
 export async function InitSheduler() {
 	for (var job in schedule.scheduledJobs)
 		schedule.cancelJob(job);
 
     var today = new Date();
-    var two_hours = 2 * 60 * 60 * 1000;
 
 	for (var id of raidChannels) {
 		raidDataArray[id] = [];
@@ -27,8 +29,8 @@ export async function InitSheduler() {
 				if (msg.client.user.id != msg.author.id) {
 					// не рейд
 					
-					if (!msg.author.bot && !msg.pinned){
-						if (today > new Date(msg.createdTimestamp + two_hours)) {
+					if (!msg.author.bot && !msg.pinned && autodeletedChannels.includes(msg.channel.id)) {
+						if (today > new Date(msg.createdTimestamp + autodelete_delay)) {
 							SaveRun(() => SafeDeleteMessage(msg));
 						} else {
 							SheduleMessageDelete(msg);
@@ -52,7 +54,8 @@ export async function InitSheduler() {
 }
 
 export function SheduleMessageDelete(message) {
-	var delete_date = new Date(message.createdTimestamp + 2 * 60 * 60 * 1000);
+	var delete_date = new Date(message.createdTimestamp + autodelete_delay);
+	console.log("Сообщение ", message.id, " будет удалено ", delete_date);
 	schedule.scheduleJob(message.id + "delete", delete_date, () => SaveRun(() => SafeDeleteMessage(message)));
 }
 

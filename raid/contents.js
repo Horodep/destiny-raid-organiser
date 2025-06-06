@@ -8,6 +8,8 @@ export const raidDataArray = {};
 
 export const contentChannels = config.guilds.map(guild => guild.contents).flat(1).filter(i => i != undefined);
 
+export const autodeletedChannels = config.guilds.map(guild => guild.autodeleted).flat(1);
+
 export function GenerateContents () {
 
     for (var channelId of contentChannels) {

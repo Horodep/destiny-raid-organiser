@@ -3,6 +3,7 @@ import { LoggingToChannel } from "../core/messaging.js";
 import { CatchError } from "../core/catcherror.js";
 import { SheduleMessageDelete } from "../core/sheduler.js";
 import { CommandManager } from "../commands/commandManager.js";
+import { autodeletedChannels } from "../raid/contents.js";
 
 export function Message(message){
 	try {
@@ -11,7 +12,9 @@ export function Message(message){
 		switch(message.channel.type){
 			case ChannelType.GuildText:
 				if (!message.content.startsWith("!")) {
-					SheduleMessageDelete(message);
+					if(autodeletedChannels.includes(message.channel.id))
+						SheduleMessageDelete(message);
+
 					return;
 				}
 		
