@@ -105,6 +105,8 @@ const activities = [
         image:   "https://www.bungie.net/img/theme/destiny/icons/fireteams/fireteam_icons_CrotasEnd.png" },
     {   strings: ["гс", "se", "грань", "salva", "edge"],
         image:   "https://www.bungie.net/img/theme/destiny/icons/fireteams/fireteams_salvationsedge.png" },
+    {   strings: ["пб", "tdp", "пески", "песок", "конечн", "desert", "perpetual"],
+        image:   "https://cdn.discordapp.com/attachments/1047038338344964116/1399063415300952228/Desert_Perpetual.png" },
     {   strings: ["веспер", "vesper", "host"],
         image:   "https://cdn.discordapp.com/attachments/799584345156616195/1296458809681903667/vesper.png" },
     {   strings: ["вера", "отсеченн", "sundered", "doctrine"],
