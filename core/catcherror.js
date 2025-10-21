@@ -22,7 +22,7 @@ export function CatchShedulerError(e, client, root) {
 
 function ShowErrorWithStack(e, channel, root) {
 	console.error(e);
-	channel.send(`<@${config.dev_config.developer}>\nОшибка ${e.name}: ${e.message}\n\n${e.stack}\n\nat${root}`, { code: 'elixir' });
+	channel.send(`<@${config.dev_config.developer}>\nОшибка ${e.name}: ${e.message}\n\n${e.stack}\n\nat ${root}`, { code: 'elixir' });
 }
 
 function ShowInfoMessage(e, channel) {

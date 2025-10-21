@@ -37,13 +37,16 @@ export async function InitSheduler() {
 						}
 					}
 				} else {
-					// рейд
+    				if (msg.embeds.length > 0 && msg.embeds[0].title != "Запланированные активности:")
+					{
+						// рейд
 
-					var data = GetRaidDataFromMessage(msg);
-					SheduleRaid(data, msg);
+						var data = GetRaidDataFromMessage(msg);
+						SheduleRaid(data, msg);
 
-					if (data.date < today) continue;
-					raidDataArray[id].push(data);
+						if (data.date < today) continue;
+						raidDataArray[id].push(data);
+					}
 				}
 			} catch(e) {
 				if(e != "Сообщение не распознано как рейд.")
