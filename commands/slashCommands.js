@@ -19,20 +19,19 @@ export async function LoadAndDeployCommands(client) {
 
 	(async () => {
 		try {
-			config.guilds.forEach(async guild_data => {
-				await rest.put(Routes.applicationCommands(config.credentials.applicationId, guild_data.id), { body: [] })
-					.then(() => console.log(`Successfully deleted ${guild_data.id} application commands.`))
-					.catch(console.error);
-				await rest.put(Routes.applicationGuildCommands(config.credentials.applicationId, guild_data.id), { body: commands })
-					.then(() => console.log(`Successfully created ${guild_data.id} application commands.`))
-					.catch(console.error);
-			});
+			//config.guilds.forEach(async guild_data => {
+			//	await rest.put(Routes.applicationGuildCommands(config.credentials.applicationId, guild_data.id), { body: [] })
+			//		.then(() => console.log(`Successfully updated application commands for guild ${guild_data.title} (${guild_data.id}).`))
+			//		.catch(console.error);
+			//});
+
 			//rest.put(Routes.applicationCommands(config.credentials.applicationId), { body: [] })
 			//	.then(() => console.log('Successfully deleted all application commands.'))
 			//	.catch(console.error);
-			//await rest.put(Routes.applicationCommands(config.credentials.applicationId), { body: commands })
-			//	.then(() => console.log('Successfully created all application commands.'))
-			//	.catch(console.error);
+			
+			await rest.put(Routes.applicationCommands(config.credentials.applicationId), { body: commands })
+				.then(() => console.log('Successfully created all application commands.'))
+				.catch(console.error);
 		} catch (error) {
 		  	console.error(error);
 		}
