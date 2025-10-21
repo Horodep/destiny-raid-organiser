@@ -6,23 +6,23 @@ export function FetchDefaultCatchErrorChannel(client) {
 	sandbox = client.channels.cache.get(config.dev_config.sandbox_channel);
 }
 
-export function CatchError(e, channel) {
+export function CatchError(e, channel, root) {
 	var validChannel = channel ?? sandbox;
 
-	if (typeof (e) == 'string') ShowInfoMessage(e, validChannel);
-	else if (e.response) ShowHttpError(e, channel);
-	else ShowErrorWithStack(e, validChannel);
+	if (typeof (e) == 'string') ShowInfoMessage(e, validChannel, root);
+	else if (e.response) ShowHttpError(e, channel, root);
+	else ShowErrorWithStack(e, validChannel, root);
 }
 
-export function CatchShedulerError(e, client) {
+export function CatchShedulerError(e, client, root) {
 	FetchDefaultCatchErrorChannel(client);
 	sandbox.send(`This is a shedule code error.`);
-	ShowErrorWithStack(e, sandbox);
+	ShowErrorWithStack(e, sandbox, root);
 }
 
-function ShowErrorWithStack(e, channel) {
+function ShowErrorWithStack(e, channel, root) {
 	console.error(e);
-	channel.send(`<@${config.dev_config.developer}>\nОшибка ${e.name}: ${e.message}\n\n${e.stack}`, { code: 'elixir' });
+	channel.send(`<@${config.dev_config.developer}>\nОшибка ${e.name}: ${e.message}\n\n${e.stack}\n\nat${root}`, { code: 'elixir' });
 }
 
 function ShowInfoMessage(e, channel) {

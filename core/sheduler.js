@@ -47,7 +47,7 @@ export async function InitSheduler() {
 				}
 			} catch(e) {
 				if(e != "Сообщение не распознано как рейд.")
-					CatchShedulerError(e, client);
+					CatchShedulerError(e, client, `${msg.guildId}\\${msg.channelId}\\${msg.id}`);
 			}
 		}
 	}

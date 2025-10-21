@@ -57,7 +57,7 @@ export function GetRaidDataFromMessage(message) {
                 var isKicked = line.includes("no_entry_sign");
                 return { date: date, id: id, isKicked: isKicked };
             } catch (e) {
-                CatchError(e);
+                CatchError(e, null, `${message.guildId}\\${message.channelId}\\${message.id}`);
             }
         }) ?? [];
 

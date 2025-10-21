@@ -14,15 +14,25 @@ export async function LoadAndDeployCommands(client) {
 
     const rest = new REST({ version: '10' }).setToken(config.credentials.discordApiKey);
 
+	const guilds = config.guilds.map(guild => guild.id);
+
+
 	(async () => {
 		try {
-			rest.put(Routes.applicationCommands(config.credentials.applicationId), { body: [] })
-				.then(() => console.log('Successfully deleted all application commands.'))
-				.catch(console.error);
-
-			await rest.put(Routes.applicationCommands(config.credentials.applicationId), { body: commands })
-				.then(() => console.log('Successfully created all application commands.'))
-				.catch(console.error);
+			config.guilds.forEach(async guild_data => {
+				await rest.put(Routes.applicationCommands(config.credentials.applicationId, guild_data.id), { body: [] })
+					.then(() => console.log(`Successfully deleted ${guild_data.id} application commands.`))
+					.catch(console.error);
+				await rest.put(Routes.applicationGuildCommands(config.credentials.applicationId, guild_data.id), { body: commands })
+					.then(() => console.log(`Successfully created ${guild_data.id} application commands.`))
+					.catch(console.error);
+			});
+			//rest.put(Routes.applicationCommands(config.credentials.applicationId), { body: [] })
+			//	.then(() => console.log('Successfully deleted all application commands.'))
+			//	.catch(console.error);
+			//await rest.put(Routes.applicationCommands(config.credentials.applicationId), { body: commands })
+			//	.then(() => console.log('Successfully created all application commands.'))
+			//	.catch(console.error);
 		} catch (error) {
 		  	console.error(error);
 		}
