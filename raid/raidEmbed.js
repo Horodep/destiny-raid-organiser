@@ -109,6 +109,8 @@ const activities = [
         image:   "https://cdn.discordapp.com/attachments/1047038338344964116/1399063415300952228/Desert_Perpetual.png" },
     {   strings: ["веспер", "vesper", "host"],
         image:   "https://cdn.discordapp.com/attachments/799584345156616195/1296458809681903667/vesper.png" },
+    {   strings: ["равно", "равновесие", "equilibrium", "eq"],
+        image:   "https://www.bungie.net/common/destiny2_content/icons/462c1abdb64ee9f5d14108ddcedeae8b.png" },
     {   strings: ["вера", "отсеченн", "sundered", "doctrine"],
         image:   "https://cdn.discordapp.com/attachments/1047038338344964116/1379988544092901417/sundered-doctrine.png" },
     {   strings: ["трон", "throne"],
