@@ -1,5 +1,5 @@
 import { RaidData, GetDateString } from "./raidData.js";
-import config from "../config.json" assert {type: "json"};
+import config from "../config.json" with {type: "json"};
 
 export function ParseMessageCommandAndGetRaidData(args, message) {
     //0    1     2     3   4           5

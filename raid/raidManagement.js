@@ -5,7 +5,7 @@ import { ParseMessageCommandAndGetRaidData, ParseSlashCommandAndGetRaidData, Par
 import { SheduleRaid, CancelSheduledRaid } from "../core/sheduler.js";
 import { SafeDeleteMessageByTimeout } from "../core/safedeleting.js";
 import { raidDataArray, CheckAndUpdateContentMessage, FindAndUpdateRaidData, FindAndDeleteRaidData } from "../raid/contents.js"
-import config from "../config.json" assert {type: "json"};
+import config from "../config.json" with {type: "json"};
 
 export function CreateRaidFromMessage(message, args) {
     try {

@@ -1,4 +1,4 @@
-import config from "../config.json" assert {type: "json"};
+import config from "../config.json" with {type: "json"};
 import { GetRaidDataFromMessage } from "./raidEmbed.js";
 import { raidChannels } from "../raid/contents.js"
 

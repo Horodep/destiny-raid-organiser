@@ -1,4 +1,4 @@
-import config from "../config.json" assert {type: "json"};
+import config from "../config.json" with {type: "json"};
 
 export function SendCustomMessage(client, args){
     if (args.length < 3) return;

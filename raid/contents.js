@@ -1,4 +1,4 @@
-import config from "../config.json" assert {type: "json"};
+import config from "../config.json" with {type: "json"};
 import { client } from "../index.js";
 import { EmbedBuilder } from "discord.js";
 import { GetShortDateWithWeekday } from "../raid/raidData.js";

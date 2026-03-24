@@ -1,5 +1,5 @@
 import { SlashCommandBuilder, REST, Routes, Collection } from "discord.js";
-import config from "../config.json" assert {type: "json"};
+import config from "../config.json" with {type: "json"};
 import { CreateRaidFromSlashCommand } from "../raid/raidManagement.js";
 
 export async function LoadAndDeployCommands(client) {

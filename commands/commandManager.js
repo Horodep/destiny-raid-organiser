@@ -2,7 +2,7 @@ import { EmbedBuilder } from "discord.js";
 import { GetCreatorCommandsArray } from "./creatorCommand.js";
 import { GetMainCommandsArray } from "./mainCommand.js";
 import { GetRaidCommandsArray } from "./raidCommand.js";
-import nodePackage from "../package.json" assert {type: "json"};
+import nodePackage from "../package.json" with {type: "json"};
 
 export class CommandManager {
     static commandList = [];
