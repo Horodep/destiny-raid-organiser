@@ -10,7 +10,7 @@ export function CreateRaidMessage(data, customTimestamp) {
         throw 'В заголовке сбора не должно быть упоминаний, используйте описание.';
     else if (data.description != null && data.description.length > 2048)
         throw 'Длина комментария сбора не может быть больше 2048 символов.';
-    else if (data.numberOfPlaces == 1)
+    else if (data.numberOfPlaces < 2)
         throw 'Активность можно собрать не менее, чем на двоих участников.';
     else if (data.numberOfPlaces > 18)
         throw 'Максимальное количество участников — 18.';
