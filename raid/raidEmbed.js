@@ -89,6 +89,8 @@ function CheckMessageIfRaid(message) {
 }
 
 const activities = [
+    {   strings: ["пантеон", "pantheon"],
+        image:   "https://cdn.discordapp.com/attachments/799584345156616195/1515245301185773568/Pantheon.png" },
     {   strings: ["пж", "lw", "последн", "желан", "ривен", "сердце", "last", "wish", "виш"],
         image:   "https://www.bungie.net/img/theme/destiny/icons/fireteams/fireteam_LastWish.png" },
     {   strings: ["сгк", "dsc", "склеп", "crypt", "таникс"],
