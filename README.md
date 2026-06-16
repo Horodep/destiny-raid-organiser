@@ -1,6 +1,8 @@
 # destiny-raid-organiser
 This is a discord bot created to manage raid appointments in the game Destiny 2.
 
+<img width="720" height="720" alt="presentation" src="https://github.com/user-attachments/assets/b197794a-5003-45a9-b770-b97f32b5a674" />
+
 ## List of commands:
 * `!сбор ДД.ММ ЧЧ:ММ название активности, комментарии`  
   создание сбора на активность на 6 человек;  
