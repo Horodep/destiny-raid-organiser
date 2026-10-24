@@ -78,11 +78,12 @@ function CreateContentMessage(channelId) {
         var counter = data.description == "" ? 40 : 34;
         var title = data.raidName.length > counter ?
             data.raidName.slice(0, counter) + "..." : data.raidName;
+        var descr = data.descriptionWithoutTags.length > 256 ? data.descriptionWithoutTags.substr(0,256)+"..." : data.descriptionWithoutTags;
 
         nextline += "`" + GetShortDateWithWeekday(data.date) + "`";
         nextline += " `+" + (data.numberOfPlaces - data.members.length) + "` ";
         nextline += `[**${title}** ${data.description == "" ? "" : "(info)"}]`;
-        nextline += `(${data.messageUrl} "${data.raidName}${data.description == "" ? "" : ","}${data.descriptionWithoutTags}")`;
+        nextline += `(${data.messageUrl} "${data.raidName}${data.description == "" ? "" : ","}${descr}")`;
 
         if (data.roleTag){
             var roleId = data.roleTag.join(' ').match(/\d+/g);
