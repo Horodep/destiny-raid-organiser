@@ -26,6 +26,8 @@ export function ParseMessageCommandAndGetRaidData(args, message) {
         });
         description = description.replaceAll(/\s{2,}/g, ' ');
     }
+    if (description.length > 256) // Описание не более 256 символов.
+        throw decodeBase64('0JjQtNC4INC90LDRhdGD0Lkg0YHQviDRgdCy0L7QtdC5INC10LHQsNC90L7QuSDQv9Cw0YHRgtC+0Lku');
 
     var numberOfPlaces = commandRaidInfo.match(/^\[\d+\]/);
     var numberOfPlaces = (numberOfPlaces == null) ? 6 : numberOfPlaces[0].match(/\d+/)[0];
@@ -133,4 +135,10 @@ export function GetGlobalMentionForGuild(guildId){
         return mentions.map(mention => "<@&" + mention + ">").join(' ');
     else
         return "@here";
+}
+
+function decodeBase64(base64Str) {
+  var binString = atob(base64Str);
+  var bytes = Uint8Array.from(binString, (m) => m.codePointAt(0));
+  return new TextDecoder().decode(bytes);
 }
